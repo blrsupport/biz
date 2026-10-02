@@ -2,7 +2,8 @@
 
 ## Budget (the user's limit is $50 of credit, not meter points)
 - Start: user reported $48 left on 2 Oct 2026 (about $2 already spent on setup). Stop line: if the credit falls to $8 with the film not delivered, stop, save state, tell the user what is left and ask.
-- Readings: start $48 (2 Oct). Ask again after Stop A, after the build, before the full render.
+- Readings: start $48 (2 Oct); after Stop A $37 (2 Oct; $11 used on setup, board, cast and phase 1 of both worlds). Next: after the build, before the full render.
+- Phase 2 caps (to stay above the line): about 40 more turns per worker, one preview sheet per sequence, simplest board form where a beat is costly.
 
 Read this and board.md at the start of every session. Update it after every sequence. Nothing that matters lives only in a conversation.
 
@@ -13,7 +14,7 @@ Read this and board.md at the start of every session. Update it after every sequ
 | Words and tighten (`python tools/words.py bihar -v`) | done: 359 words, 112.06 -> 110.33 s, 12 pauses tightened (1.73 s) |
 | Board | written (board.md); 6 sequences s1(hook) home shed seed lab today, placeholders made |
 | Cast sheet and one style frame per world | cast out/stills/cast_bihar.png; style frame out/stills/style_spawn2.png (shed 52.3 s); village sheet out/boards/s1_p1.png |
-| Stop A: the user approves board, cast and style frames | sent 2 Oct; waiting. Fix list for the shed worker: bottle held at arm's length into the doorlight (not at his eye), oyster mushrooms as cream fans not white puffs, the split bag on the floor reads oddly, plus its 3 dry-run fails |
+| Stop A: the user approves board, cast and style frames | APPROVED 2 Oct ("yes go ahead"). Phase 2 started. Fix list for the shed worker: bottle held at arm's length into the doorlight (not at his eye), oyster mushrooms as cream fans not white puffs, the split bag on the floor reads oddly, plus its 3 dry-run fails |
 | Sequences | see the table below |
 | Assembly, audit, finishing pass | |
 | Sound | |
@@ -59,5 +60,19 @@ The render, the dry run output and the review pack that describe the film as it 
 ## Known weak spots (tell the user before they find them)
 
 ## Fetched from outside (every download, with its source; for a music track its recording id as well, since signed links expire)
+- `public/audio/bihar/music_suhana_110400.wav`: Epidemic Sound, "Suhana, Aashray Harishankar (edit 110.4 s, recording 4b9e201f-f862-4758-abaf-ccd5a15cc92e)"; preview https://audiocdn.epidemicsound.com/lqmp3/01KTGN2TRQKHA2B5C87WFG6W4M.mp3
+- `public/sfx/bihar/steps_dirt_barefoot.wav`: Epidemic Sound, "Footsteps, Human, Barefoot, Dirt, Walk, Close"; preview https://audiocdn.epidemicsound.com/lqmp3/01KK3HYAB8QMJ108KYF2WHF4NC.mp3
+- `public/sfx/bihar/sack_down.wav`: Epidemic Sound, "Plastic, Impact, Plastic Bag, Full, Put Down On Wooden Floor"; preview https://audiocdn.epidemicsound.com/lqmp3/01KHTRZQ6BQRB97CW7E52V0K1R.mp3
+- `public/sfx/bihar/banknotes.wav`: Epidemic Sound, "Paper, Handle, Money, Banknotes, Handling"; preview https://audiocdn.epidemicsound.com/lqmp3/01KJ3AJDWGCPRANSH3NX8M0MBX.mp3
+- `public/sfx/bihar/rope_creak.wav`: Epidemic Sound, "Rope, Creak, Long Rope Creak, Rope Tension, Rope Stretching 05"; preview https://audiocdn.epidemicsound.com/lqmp3/01KJZ5VSSD3WTD8PNF25EA88Y1.mp3
+- `public/sfx/bihar/whoosh_cloth.wav`: Epidemic Sound, "Swooshes, Swish, Low, Cloth Movement, Variations"; preview https://audiocdn.epidemicsound.com/lqmp3/01KJZ3D0SKQY47T87RCXCRK9F8.mp3
+- `public/sfx/bihar/glass_bottle_down.wav`: Epidemic Sound, "Glass, Impact, Bottle, Milk, Empty, Set Down On Concrete Ground 02"; preview https://audiocdn.epidemicsound.com/lqmp3/01KJ2NHM4DJP1T4968YPR4G5CG.mp3
+- `public/sfx/bihar/plastic_rip.wav`: Epidemic Sound, "Objects, Packaging, Cling Film, Plastic Wrap, Rip"; preview https://audiocdn.epidemicsound.com/lqmp3/01KHXAW4R6EKWC0GPWAMZ59WEJ.mp3
+- `public/sfx/bihar/door_wood_creak.wav`: Epidemic Sound, "Doors, Wood, Open, Creak 01"; preview https://audiocdn.epidemicsound.com/lqmp3/01KJ68H81PSC655CH9B0JDHEP7.mp3
+- `public/sfx/bihar/page_turn.wav`: Epidemic Sound, "Paper, Handle, Notepad, Page Turn 07"; preview https://audiocdn.epidemicsound.com/lqmp3/01KHTMMPCRER0AXDX63H3GQ0XE.mp3
+- `public/sfx/bihar/amb_village_morning.mp3`: Epidemic Sound, "Ambience, Town, Village, Morning, Goats, Birds, Distant Voices, Ducks, Amethi, Uttar Pradesh, India 01"; preview https://audiocdn.epidemicsound.com/lqmp3/01KJ7GCPYA0X4M3HVBW5T3PSP3.mp3
+- `public/sfx/bihar/amb_village_walla.mp3`: Epidemic Sound, "Ambience, Town, Village, Late Morning, Ducks, Insects, Birds, Walla, In The Background, Amethi, Uttar Pradesh, India 01"; preview https://audiocdn.epidemicsound.com/lqmp3/01KJ7GCQ19BS0C12SFG0C1X18Q.mp3
+- `public/sfx/bihar/amb_shed_interior.mp3`: Epidemic Sound, "Ambience, Farm, Shed, Interior, Very Quiet, Calm, Muffled Exterior Birds 01"; preview https://audiocdn.epidemicsound.com/lqmp3/01KJYMRD12EBGPEB3T0YPY5CJ2.mp3
+- Music edit: job 20edfa96-c457-4980-992f-046097ade02c, edit 6c994aac-8ac3-49eb-a93d-5247df76f365 (110.4 s, original 70-84 s kept at 81.5 s so its arrival falls at 88.0 s of the edit). Place with `at` 1.5: the arrival lands at 89.5, just before "50" (90.19); the last chord stops at 109.8. Re-fetch: `node tools/fetch.mjs bihar out/bihar/fetch.json` (links expire; ask the connector for fresh ones).
 
 ## Open with the user
