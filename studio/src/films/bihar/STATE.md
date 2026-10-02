@@ -12,8 +12,8 @@ Read this and board.md at the start of every session. Update it after every sequ
 |---|---|
 | Words and tighten (`python tools/words.py bihar -v`) | done: 359 words, 112.06 -> 110.33 s, 12 pauses tightened (1.73 s) |
 | Board | written (board.md); 6 sequences s1(hook) home shed seed lab today, placeholders made |
-| Cast sheet and one style frame per world | |
-| Stop A: the user approves board, cast and style frames | |
+| Cast sheet and one style frame per world | cast out/stills/cast_bihar.png; style frame out/stills/style_spawn2.png (shed 52.3 s); village sheet out/boards/s1_p1.png |
+| Stop A: the user approves board, cast and style frames | sent 2 Oct; waiting. Fix list for the shed worker: bottle held at arm's length into the doorlight (not at his eye), oyster mushrooms as cream fans not white puffs, the split bag on the floor reads oddly, plus its 3 dry-run fails |
 | Sequences | see the table below |
 | Assembly, audit, finishing pass | |
 | Sound | |
