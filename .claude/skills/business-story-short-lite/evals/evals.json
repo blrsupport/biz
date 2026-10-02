@@ -1,0 +1,58 @@
+{
+  "skill_name": "business-story-short",
+  "how_to_grade": "Eval 1 produces a film: run `python evals/grade_film.py \"<studio>\" <film> --out grading.json` (it re-measures the delivered file, runs the dry run, and checks that the engine was not edited), then have a person watch the film beside the two example films. Evals 2 and 3 are graded by reading what was changed and what was said. The baseline for a film is not a run without the skill (that would mean a second renderer on the same PC): it is the same stretch of the older film, set beside the new one with `node tools/compare.mjs`.",
+  "evals": [
+    {
+      "id": 1,
+      "name": "new-stretch-end-to-end",
+      "prompt": "here's a 16 second stretch of my GGSP narration - big_break_vo.wav, the word level srt and the script for it. make the short for this stretch with the business-story-short skill. the studio is already set up. don't stop to ask me things, make the calls yourself and list them at the end",
+      "expected_output": "A 1080x1920 30 fps MP4 with a full mix of about 15.6 s (the tightened voice), an effects-only MP3 and the tightened voice file; one new world (a dead factory in Kutch that comes back to life) built to the look of the two example films; 'December 2017' and other type verbatim and on its word; the dry run, the motion audit and the mix checks all passing; a report listing trims, sounds, unconfirmed spellings and known weak spots.",
+      "files": ["proof/input/big_break_vo.wav", "proof/input/big_break_words.srt", "proof/input/big_break_script.txt"],
+      "assertions": [
+        "the project type-checks and the dry run passes for the new film",
+        "no sequence is joined to the one before by a bare cut",
+        "the engine and the tools are as the skill delivered them",
+        "a board with beats, a STATE.md and a rendered cast sheet exist",
+        "the film, the effects-only MP3, the tightened voice and report.md are in out/<film>/deliver/",
+        "the film is H.264 yuv420p bt709, 1080x1920 at 30 fps, AAC 48 kHz stereo, as long as the tightened voice",
+        "loudness is -14 LUFS give or take 0.6 and the true peak is at or under -1 dB",
+        "every check in the mix report is true and the effects-only file is not silent",
+        "the motion audit shows 1 % or fewer held frames inside a move, 8 % or less near-still time with no stretch over 1.25 s, and no flash frames",
+        "the report lists the trims, and every sound used is listed with a preview link",
+        "a person finds that a still of the new film could be cut next to a still of the example films (same light, same figures, same type)",
+        "every word on screen is the narrator's, and the reply lists the decisions made, what is unconfirmed, and the known weak spots"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "remix-without-rerender",
+      "prompt": "the music in the minus degre short is too loud under the last line, and the thud when the oven lands is a bit much. fix the mix and give me the new file, don't touch the picture",
+      "expected_output": "Only src/films/md/sound.json changes (the music's keys or level near the last line, the thud layers' pk); the mix is rebuilt with audio_mix.py and passes every check; deliver.mjs is run again on the existing finished picture; no render is started; the reply says what was changed by how many dB and that it was done by measurement.",
+      "files": [],
+      "assertions": [
+        "only src/films/md/sound.json was edited",
+        "no render or still was started (no browser launched)",
+        "audio_mix.py was run and every check in its report is true",
+        "deliver.mjs was run again and the new file passes its checks",
+        "the reply says which levels changed and by how many dB, and that the balance was set by measurement, not by ear"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "new-film-start-and-stop-a",
+      "prompt": "new story, 95 seconds, founder of a bakery chain. vo.mp3 and words.srt attached, no script file. can you start on it and tell me how long it'll take",
+      "expected_output": "A new film scaffolded with new-film.mjs; words.py run and words.png looked at; the narration read with script.ts; a board in sequences and beats with joins, type moments verbatim from the narration, and a cast list; the cast sheet and one style frame per world rendered; names and spellings listed for confirmation because there is no script; a time estimate; and a stop for the user's go-ahead before any sequence is animated.",
+      "files": [],
+      "assertions": [
+        "a time estimate is given in the first reply, before the long work starts",
+        "the film is scaffolded with new-film.mjs and words.py has been run and its picture looked at",
+        "the board cuts the narration into sequences and beats, with a planned join between each pair of sequences",
+        "every type moment on the board is verbatim from the narration, and no number is invented",
+        "names and spellings are listed for the user to confirm, because there is no script file",
+        "a cast sheet and one style frame per world are rendered and sent with the board",
+        "the limits that the story runs into (draped clothing, long hair, children, crowds, non-Latin type) are said on the board, not after the build",
+        "work stops for the user's go-ahead before any sequence is animated"
+      ]
+    }
+  ]
+}
