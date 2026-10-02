@@ -3,3 +3,4 @@ out/
 public/audio/
 public/sfx/
 tools/bin/
+tools/__pycache__/

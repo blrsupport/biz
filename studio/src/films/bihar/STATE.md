@@ -1,13 +1,17 @@
 # Bihar Mushroom: state
 
+## Budget (the user's limit is $50 of credit, not meter points)
+- Start: user reported $48 left on 2 Oct 2026 (about $2 already spent on setup). Stop line: if the credit falls to $8 with the film not delivered, stop, save state, tell the user what is left and ask.
+- Readings: start $48 (2 Oct). Ask again after Stop A, after the build, before the full render.
+
 Read this and board.md at the start of every session. Update it after every sequence. Nothing that matters lives only in a conversation.
 
 ## Scoreboard
 
 | Step | Status |
 |---|---|
-| Words and tighten (`python tools/words.py bihar -v`) | |
-| Board | |
+| Words and tighten (`python tools/words.py bihar -v`) | done: 359 words, 112.06 -> 110.33 s, 12 pauses tightened (1.73 s) |
+| Board | written (board.md); 6 sequences s1(hook) home shed seed lab today, placeholders made |
 | Cast sheet and one style frame per world | |
 | Stop A: the user approves board, cast and style frames | |
 | Sequences | see the table below |
@@ -22,6 +26,9 @@ Read this and board.md at the start of every session. Update it after every sequ
 | s1 | | | | | | placeholder |
 
 ## Decisions taken
+- Two worlds: village (new set, worker A: s1, home, today) and shed/lab (library room re-dressed, worker B: shed, seed, lab).
+- Spellings from the user: BIT Sindri, Sanjeev Kumar, Solan, Himachal, SABRI Spawn Lab. In film.ts facts.
+- ffmpeg: tools/bin links to the system build (/usr/bin/ffmpeg 6.1.1, full).
 
 ## The stage (so the next session need not read the take to find it)
 

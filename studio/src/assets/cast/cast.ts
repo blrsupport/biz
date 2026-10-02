@@ -259,7 +259,108 @@ export const SON_B: Character = {
   },
 };
 
-export const CAST = { rahul: RAHUL, vikas: VIKAS, iraki: IRAKI, buyer: BUYER, porter: PORTER, sonA: SON_A, sonB: SON_B } as const;
+// ---- the Bihar mushroom story: Sanjeev as a young graduate and as he is today, and his father
+
+const SANJEEV_HAIR: Character["head"]["hair"] = {
+  mat: "hair",
+  // short, parted on his right, swept back off the forehead
+  line: [
+    [-180, 0.18],
+    [-140, 0.16],
+    [-100, 0.11],
+    [-82, 0.09],
+    [-66, -0.08],
+    [-48, -0.25],
+    [-20, -0.33],
+    [0, -0.33],
+    [30, -0.29],
+    [55, -0.18],
+    [70, -0.05],
+    [82, 0.09],
+    [100, 0.11],
+    [140, 0.16],
+    [180, 0.18],
+  ],
+  top: 0.055,
+  side: 0.028,
+  nape: 0.02,
+  lip: 0.01,
+};
+
+const SANJEEV_HEAD = (hairMat: string, glasses: boolean): Character["head"] => ({
+  form: headForm({ wide: 0.94, jaw: 1.02, chin: 1.4, cheek: 0.98, brow: 0.006 }),
+  face: { ...FACE_BASE, eyeX: 0.152, eyeW: 0.035, eyeH: 0.05, browT: 0.024, browArch: 0.018, browW: 0.15, noseLen: 0.078, noseWing: 0.058, mouthW: 0.1, mouthY: 0.31 },
+  skin: "skin.sanjeev",
+  hair: { ...SANJEEV_HAIR, mat: hairMat },
+  moustache: { mat: hairMat, y: 0.215, w: 0.11, h: 0.03, droop: 0.015 },
+  ...(glasses ? { glasses: { mat: "frame", w: 0.098, h: 0.074, lift: 0.045 } } : {}),
+});
+
+/** Sanjeev in the early 2000s: a slim young engineering graduate in a sky-blue shirt. */
+export const SANJEEV: Character = {
+  id: "sanjeev",
+  skin: "skin.sanjeev",
+  build: makeBuild({ wide: 0.88, deep: 0.88, shoulders: 1.04, limb: 0.9, legs: 1.08, torso: 1.02, arms: 1.03 }),
+  head: SANJEEV_HEAD("hair", false),
+  outfit: {
+    top: { mat: "shirt.sky", hem: 1.07, sleeve: 1.1, cuff: { mat: "shirt.sky", from: 0.98, to: 1.13 }, neck: { dip: 0.12, point: true }, ease: 0.012, placket: { to: 1.0, buttons: 4, mat: "shirt.sky" } },
+    collar: { mat: "shirt.sky", kind: "wing" },
+    legs: { mat: "trousers.grey", half: [0.235, 0.18, 0.15], end: 1.95 },
+    shoe: { mat: "shoe" },
+  },
+};
+
+/** Sanjeev today: the same face twenty years on, fuller, greying, in glasses, a white kurta and a brown half-jacket. */
+export const SANJEEV_NOW: Character = {
+  id: "sanjeevNow",
+  skin: "skin.sanjeev",
+  build: makeBuild({ wide: 1.0, deep: 1.0, chest: 0.03, belly: 0.06, shoulders: 1.02, limb: 0.98, legs: 1.04, torso: 1.02 }),
+  head: SANJEEV_HEAD("hair.salt", true),
+  outfit: {
+    top: { mat: "kurta.white", hem: 1.45, sleeve: 1.9, neck: { dip: 0.06 }, ease: 0.02 },
+    over: { mat: "jacket.brown", from: 0.0, hem: 0.98, neck: { dip: 0.34, point: true }, placket: { to: 0.92, buttons: 4, mat: "jacket.brown", tone: "shade" } },
+    collar: { mat: "jacket.brown", kind: "band" },
+    legs: { mat: "pajama", half: [0.245, 0.19, 0.16], end: 1.93 },
+    shoe: { mat: "sandal" },
+  },
+};
+
+/** Sanjeev's father: a lean farmer, a little bent, white-haired, in a short white kurta and pajama. */
+export const FATHER: Character = {
+  id: "father",
+  skin: "skin.father",
+  build: makeBuild({ wide: 0.86, deep: 0.9, shoulders: 0.94, limb: 0.86, legs: 0.98, torso: 0.98 }),
+  head: {
+    form: headForm({ wide: 0.93, jaw: 0.95, chin: 1.05, cheek: 0.92, back: 1.04 }),
+    face: { ...FACE_BASE, eyeX: 0.155, eyeW: 0.03, eyeH: 0.04, browT: 0.026, browW: 0.17, browArch: 0.01, noseLen: 0.088, noseWing: 0.06, noseTip: 0.13, mouthW: 0.09, mouthY: 0.32 },
+    skin: "skin.father",
+    hair: {
+      mat: "hair.white",
+      line: [
+        [0, -0.24],
+        [40, -0.22],
+        [62, -0.1],
+        [80, 0.08],
+        [100, 0.1],
+        [140, 0.15],
+        [180, 0.17],
+      ],
+      top: 0.022,
+      side: 0.024,
+      nape: 0.02,
+    },
+    moustache: { mat: "hair.white", y: 0.22, w: 0.125, h: 0.045, droop: 0.04 },
+    browMat: "hair.white",
+  },
+  outfit: {
+    top: { mat: "kurta.white", hem: 1.32, sleeve: 1.2, neck: { dip: 0.08 }, ease: 0.02 },
+    collar: { mat: "kurta.white", kind: "band" },
+    legs: { mat: "pajama", half: [0.24, 0.19, 0.16], end: 1.9 },
+    shoe: { mat: "sandal" },
+  },
+};
+
+export const CAST = { rahul: RAHUL, vikas: VIKAS, iraki: IRAKI, buyer: BUYER, porter: PORTER, sonA: SON_A, sonB: SON_B, sanjeev: SANJEEV, sanjeevNow: SANJEEV_NOW, father: FATHER } as const;
 
 /** Base colours of the cast. Shadow and light tones are computed from these and the scene light. */
 export const CAST_PALETTE: Palette = {
@@ -268,6 +369,13 @@ export const CAST_PALETTE: Palette = {
   "skin.vikas": "#b47850",
   "skin.iraki": "#b9794c",
   "skin.buyer": "#c18a62",
+  "skin.sanjeev": "#b67a52",
+  "skin.father": "#a06a46",
+  "hair.salt": "#6d6866",
+  "hair.white": "#dcd6cc",
+  "shirt.sky": "#8fb4d4",
+  "trousers.grey": "#5a5c66",
+  "jacket.brown": "#6e4b33",
   hair: "#241c1e",
   "hair.iraki": "#2c2526",
   kurta: "#d9a233",
