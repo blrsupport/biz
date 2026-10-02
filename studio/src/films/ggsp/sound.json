@@ -1,0 +1,66 @@
+{
+  "lufs": -14.0,
+  "ceiling": -1.7,
+  "vo": { "file": "public/audio/ggsp/vo-tight.wav", "lufs": -15.0 },
+  "music": {
+    "file": "public/audio/ggsp/music_suhana_24600.wav",
+    "at": 0.0,
+    "to": 24.51,
+    "lufs": -31.0,
+    "duck": 4.0,
+    "fadeIn": 0.5,
+    "fadeOut": 0.28,
+    "keys": [[0, 9], [4.1, 9], [4.3, 7], [4.8, 7], [5.0, 9], [10.3, 9], [11.0, 4], [19.2, 4], [20.6, 2], [20.9, -4], [21.4, -4], [21.7, -2], [23.99, -2], [24.2, 6], [24.51, 6]]
+  },
+  "amb": [
+    { "file": "public/sfx/md/amb_courtyard_distant_traffic.mp3", "from": 30, "pk": -46, "keys": [[0, -6], [0.5, 0], [19.3, 0], [20.1, -40], [21.6, -40], [22.6, -2], [24.51, -2]] },
+    { "file": "public/sfx/ggsp/amb_junkyard.mp3", "from": 26, "pk": -45, "keys": [[0, 0], [7, 0], [8.5, -6], [19.3, -6], [20.0, -40], [24.51, -40]] }
+  ],
+  "cues": {
+    "clang.far": [{ "file": "public/sfx/ggsp/clang_far.wav", "from": 0.02, "to": 2.4, "lead": 0.03, "pk": -28, "fadeOut": 1.0, "width": 0.4 }],
+    "crow": [{ "file": "public/sfx/ggsp/crow_caw.wav", "variants": [[2.29, 3.08], [6.55, 7.13]], "lead": 0.03, "pk": -26, "fadeOut": 0.1 }],
+    "wings": [{ "file": "public/sfx/ggsp/wings_flap.wav", "from": 0.04, "to": 1.3, "lead": 0.03, "pk": -28, "fadeOut": 0.2 }],
+    "pass": [{ "file": "public/sfx/ggsp/whoosh_low.wav", "from": 0.02, "to": 1.5, "lead": 0.36, "dt": 0.75, "pk": -27, "fadeIn": 0.1, "fadeOut": 0.5, "width": 0.3 }],
+    "step.porter": [{ "file": "public/sfx/ggsp/steps_dirt.wav", "variants": [[1.93, 2.27], [3.33, 3.65], [6.55, 6.9], [9.25, 9.6]], "lead": 0.03, "pk": -30, "fadeOut": 0.1 }],
+    "step.iraki": [{ "file": "public/sfx/ggsp/steps_dirt.wav", "variants": [[0.46, 0.8], [2.68, 3.0], [7.15, 7.5], [10.31, 10.65]], "lead": 0.03, "pk": -33, "fadeOut": 0.1 }],
+    "step.buyer": [{ "file": "public/sfx/ggsp/steps_dirt.wav", "variants": [[3.95, 4.3], [11.48, 11.8], [12.29, 12.6], [13.14, 13.5], [1.93, 2.27], [9.25, 9.6]], "lead": 0.03, "pk": -31, "fadeOut": 0.1 }],
+    "scuff": [{ "file": "public/sfx/ggsp/steps_dirt.wav", "variants": [[0.46, 0.8], [6.55, 6.9], [10.31, 10.65]], "lead": 0.03, "pk": -37, "fadeOut": 0.1 }],
+    "throw": [{ "file": "public/sfx/ggsp/swish.wav", "from": 0.02, "to": 0.36, "lead": 0.08, "pk": -25, "fadeOut": 0.1 }],
+    "clank": [
+      { "file": "public/sfx/ggsp/clank_scrap.wav", "from": 0.05, "to": 0.7, "lead": 0.02, "pk": -22.5, "fadeOut": 0.25 },
+      { "file": "public/sfx/ggsp/clank_rod_pile.wav", "from": 0.02, "to": 0.9, "lead": 0.02, "dt": 0.05, "pk": -27, "fadeOut": 0.3 }
+    ],
+    "dust": [{ "file": "public/sfx/ggsp/dust_pour.wav", "from": 0.05, "to": 0.9, "lead": 0.02, "pk": -31, "fadeOut": 0.4 }],
+    "hook": [
+      { "file": "public/sfx/ggsp/chain_shake.wav", "from": 0.05, "to": 0.6, "lead": 0.02, "pk": -28, "fadeOut": 0.2 },
+      { "file": "public/sfx/ggsp/tick.wav", "from": 0.0, "to": 0.2, "pk": -29, "fadeOut": 0.05 }
+    ],
+    "heave": [{ "file": "public/sfx/ggsp/sack_cloth.wav", "from": 1.58, "to": 2.3, "lead": 0.02, "pk": -29, "fadeOut": 0.15 }],
+    "chain": [{ "file": "public/sfx/ggsp/chain_jingle.wav", "from": 2.19, "to": 3.5, "lead": 0.02, "pk": -27, "fadeOut": 0.5 }],
+    "tick": [{ "file": "public/sfx/ggsp/tick.wav", "variants": [[0.77, 0.95], [1.5, 1.7]], "pk": -30, "fadeOut": 0.05 }],
+    "notes": [{ "file": "public/sfx/md/banknotes_handling.wav", "variants": [[0.26, 0.55], [0.5, 0.82], [0.3, 0.6]], "lead": 0.02, "pk": -31, "fadeOut": 0.08 }],
+    "set": [
+      { "file": "public/sfx/ggsp/sack_down.wav", "from": 0.0, "to": 0.4, "lead": 0.01, "pk": -23, "fadeOut": 0.15 },
+      { "file": "public/sfx/ggsp/thud_grit.wav", "from": 0.0, "to": 0.5, "lead": 0.01, "pk": -29, "fadeOut": 0.2 },
+      { "file": "public/sfx/ggsp/chain_shake.wav", "from": 0.05, "to": 0.7, "dt": 0.14, "pk": -30, "fadeOut": 0.3 }
+    ],
+    "notes.take": [{ "file": "public/sfx/md/banknotes_handling.wav", "from": 0.26, "to": 0.82, "lead": 0.02, "pk": -29, "fadeOut": 0.1 }],
+    "rope": [{ "file": "public/sfx/ggsp/rope_creak.wav", "from": 0.28, "to": 1.3, "lead": 0.02, "pk": -31, "fadeOut": 0.2 }],
+    "bell.soft": [{ "file": "public/sfx/ggsp/bell_large.wav", "from": 0.05, "to": 1.8, "lead": 0.03, "pk": -27, "fadeOut": 0.8, "width": 0.5 }],
+    "bell": [{ "file": "public/sfx/ggsp/bell_ship.wav", "from": 0.0, "to": 3.4, "lead": 0.1, "pk": -21.5, "fadeOut": 1.4, "width": 0.5 }],
+    "lift": [{ "file": "public/sfx/ggsp/rattle_lift.wav", "from": 0.04, "to": 1.0, "lead": 0.02, "pk": -27, "fadeOut": 0.5 }],
+    "roar": [
+      { "file": "public/sfx/ggsp/fire_flameup.wav", "from": 0.23, "to": 2.27, "lead": 1.1, "dt": 0.58, "pk": -24.8, "fadeIn": 0.3, "fadeOut": 0.5, "width": 0 },
+      { "file": "public/sfx/ggsp/furnace_hum.mp3", "from": 2.0, "to": 5.2, "dt": 0.3, "pk": -33, "fadeIn": 0.8, "fadeOut": 1.6, "width": 0 }
+    ],
+    "sparks": [{ "file": "public/sfx/ggsp/sparks.wav", "variants": [[1.0, 1.4], [2.2, 2.6], [4.3, 4.7], [5.5, 5.9], [6.6, 7.0], [8.0, 8.4]], "pk": -35, "fadeIn": 0.03, "fadeOut": 0.2 }],
+    "rolling mill": [{ "file": "public/sfx/ggsp/rod_slide.wav", "from": 2.75, "to": 4.7, "lead": 0.04, "pk": -27, "fadeIn": 0.05, "fadeOut": 0.5 }],
+    "metal ring": [{ "file": "public/sfx/ggsp/rebar_ring.wav", "from": 4.59, "to": 5.7, "lead": 0.02, "pk": -25, "fadeOut": 0.6 }],
+    "concrete thud": [
+      { "file": "public/sfx/ggsp/concrete_heavy.wav", "from": 0.02, "to": 0.5, "lead": 0.02, "pk": -22, "fadeOut": 0.15 },
+      { "file": "public/sfx/md/boom_lowhit.wav", "from": 0.0, "to": 1.1, "pk": -28, "fadeOut": 0.6, "width": 0 }
+    ],
+    "deck thud": [{ "file": "public/sfx/ggsp/concrete_set.wav", "from": 0.0, "to": 0.4, "lead": 0.01, "pk": -24, "fadeOut": 0.15 }],
+    "slab tick": [{ "file": "public/sfx/ggsp/thud_grit.wav", "variants": [[0.0, 0.22], [0.97, 1.25], [1.82, 1.98]], "lead": 0.01, "pk": -32, "fadeOut": 0.08 }]
+  }
+}

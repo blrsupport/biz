@@ -1,0 +1,14 @@
+{
+  "title": "Bihar Mushroom",
+  "vo": "src/films/bihar/source/vo.mp3",
+  "timings": "source/words.srt",
+  "lead": 0.1,
+  "tail": 0.5,
+  "fixes": {},
+  "keepAfter": [],
+  "pause": {
+    "comma": 0.28,
+    "stop": 0.42,
+    "inner": 0.2
+  }
+}

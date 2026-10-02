@@ -1,0 +1,20 @@
+{
+  "skill": "business-story-short",
+  "note": "which library files came from the skill, and what they were (scripts/update-studio.mjs reads this); do not edit",
+  "library": {
+    "src/assets/cast/cast.ts": "2813830ad4a40fe0306d",
+    "src/assets/lights.ts": "0b3d9f21bca77a1b815b",
+    "src/assets/props/crate.ts": "f6040c921f6b2008fa90",
+    "src/assets/props/md.ts": "dc3e3da64a6be6ace688",
+    "src/assets/props/press.ts": "71bce39a416c13d8db0a",
+    "src/assets/props/scale.ts": "c7bed42941f6916d5792",
+    "src/assets/props/scrap.ts": "3a1e044025dd3de9e72a",
+    "src/assets/props/tin.ts": "ba619459869a7d03d27c",
+    "src/assets/props/yardlife.ts": "9ddda123dc4b46fe2ae9",
+    "src/assets/sets/door.ts": "8a0f4928fcb914fdf72d",
+    "src/assets/sets/dressing.ts": "feadc766fabfdf5d66ef",
+    "src/assets/sets/room.ts": "a4ad48a25835e9144695",
+    "src/assets/sets/steel.ts": "8a92855045c47532bd09",
+    "src/assets/sets/yard.ts": "6072c30930f8dcf2067c"
+  }
+}

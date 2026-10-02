@@ -1,0 +1,12 @@
+{
+  "title": "German Green Steel and Power — opening",
+  "vo": "../ggsp vo.mp3",
+  "timings": "source/dtw.json",
+  "from": 0.0,
+  "to": 25.3,
+  "lead": 0.1,
+  "tail": 0.55,
+  "script": "It is 1976, and you are standing in a scrapyard in Ahmedabad. The air smells of metal and dust, and a man named Shamsulhaq Iraki is weighing a sack of iron scrap by hand, and calling out the number to a buyer. Now, he doesn't know it yet, but his sons will one day take a company public that turns that same scrap into the steel rods inside India's highways and high-rises.",
+  "keepAfter": [["1976", 1]],
+  "pause": { "comma": 0.28, "stop": 0.42, "inner": 0.2 }
+}

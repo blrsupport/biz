@@ -1,0 +1,12 @@
+{
+  "title": "Minus Degre — starting with almost nothing",
+  "vo": "../Minus degre-vo.mp3",
+  "timings": "source/dtw.json",
+  "from": 61.3,
+  "to": 76.2,
+  "lead": 0.1,
+  "tail": 0.6,
+  "script": "So they start with almost nothing. An oven for about 10,000 rupees and a machine they build for 15 to 20,000 rupees. No investors, no funding. And in 2020, the company's revenue was just 5,000 rupees.",
+  "keepAfter": [["just", 1]],
+  "pause": { "comma": 0.28, "stop": 0.42, "inner": 0.2 }
+}

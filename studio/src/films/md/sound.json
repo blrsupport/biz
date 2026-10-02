@@ -1,0 +1,46 @@
+{
+  "lufs": -14.0,
+  "ceiling": -1.7,
+  "vo": { "file": "public/audio/md/vo-tight.wav", "lufs": -15.0 },
+  "music": {
+    "file": "public/audio/md/music_last_pieces_13600.wav",
+    "at": 3.37,
+    "lufs": -28.0,
+    "duck": 3.5,
+    "fadeIn": 0.03,
+    "keys": [[0, 0], [12.3, 0], [12.6, 1], [13.4, 1], [13.75, 4.5], [14.05, 4.5]]
+  },
+  "amb": { "file": "public/sfx/md/amb_courtyard_distant_traffic.mp3", "from": 30, "pk": -47, "keys": [[0, -9], [0.45, 0], [14.05, 0]] },
+  "cues": {
+    "shutter": [
+      { "file": "public/sfx/md/shutter_garage_open.wav", "from": 1.36, "to": 1.76, "pk": -26, "fadeIn": 0.02, "fadeOut": 0.1 },
+      { "file": "public/sfx/md/shutter_garage_open.wav", "from": 3.1, "to": 4.5, "lead": 0.04, "dt": 0.33, "pk": -19, "fadeOut": 0.5 }
+    ],
+    "step.rahul": [
+      { "file": "public/sfx/md/steps_concrete_close.wav", "variants": [[1.01, 1.3], [2.15, 2.44], [4.97, 5.26], [9.0, 9.29], [9.54, 9.83], [10.69, 10.98], [11.8, 12.09], [15.14, 15.43]], "lead": 0.02, "pk": -31, "fadeOut": 0.08 }
+    ],
+    "step.vikas": [
+      { "file": "public/sfx/md/steps_concrete_close.wav", "variants": [[2.15, 2.44], [9.54, 9.83], [10.69, 10.98], [1.01, 1.3], [15.14, 15.43], [9.0, 9.29]], "lead": 0.02, "pk": -29.5, "fadeOut": 0.08 }
+    ],
+    "scuff": [{ "file": "public/sfx/md/steps_concrete_close.wav", "variants": [[0.46, 0.72], [2.71, 2.97], [7.86, 8.12]], "lead": 0.02, "pk": -36, "fadeOut": 0.08 }],
+    "thud": [
+      { "file": "public/sfx/md/putdown_toaster.wav", "from": 0.03, "to": 0.6, "lead": 0.03, "pk": -21, "fadeOut": 0.15 },
+      { "file": "public/sfx/md/putdown_metal_lamp.wav", "from": 0.04, "to": 1.2, "lead": 0.03, "pk": -24, "fadeOut": 0.3 },
+      { "file": "public/sfx/md/boom_lowhit.wav", "from": 0.0, "to": 1.2, "pk": -28, "fadeOut": 0.6, "width": 0 }
+    ],
+    "pat": [{ "file": "public/sfx/md/pat_metal_cabinet_palm.wav", "variants": [[0.02, 0.42], [2.38, 2.82]], "lead": 0.02, "pk": -25, "fadeOut": 0.1 }],
+    "clank": [
+      { "file": "public/sfx/md/clank_metal_pole_heavy.wav", "variants": [[0.01, 0.5], [5.69, 6.2], [6.89, 7.32]], "lead": 0.02, "pk": -24, "fadeOut": 0.2 },
+      { "file": "public/sfx/md/clink_metal_frame_small.wav", "from": 0.0, "to": 0.4, "lead": 0.01, "pk": -27.5, "fadeOut": 0.1 }
+    ],
+    "ratchet": [{ "file": "public/sfx/md/ratchet_wrench.wav", "variants": [[0.01, 0.16], [1.21, 1.5]], "pk": -28, "fadeOut": 0.03 }],
+    "spanner": [{ "file": "public/sfx/md/tool_down_on_metal.wav", "from": 0.0, "to": 0.35, "lead": 0.01, "pk": -28, "fadeOut": 0.1 }],
+    "dust": [{ "file": "public/sfx/md/hands_clap_rub.wav", "variants": [[6.37, 6.5], [6.85, 6.98]], "lead": 0.02, "pk": -28, "fadeOut": 0.04 }],
+    "knock": [{ "file": "public/sfx/md/pop_tap.wav", "from": 0.0, "to": 0.3, "pk": -27, "fadeOut": 0.1, "width": 0 }],
+    "page": [{ "file": "public/sfx/md/page_flip.wav", "from": 0.15, "to": 0.62, "lead": 0.05, "pk": -26, "fadeOut": 0.1 }],
+    "lid": [{ "file": "public/sfx/md/tin_lid_pop_open.wav", "from": 0.02, "to": 0.6, "lead": 0.02, "pk": -23, "fadeOut": 0.1 }],
+    "coin": [{ "file": "public/sfx/md/coin_in_tin.wav", "from": 0.0, "to": 0.38, "pk": -28, "fadeOut": 0.06 }],
+    "notes": [{ "file": "public/sfx/md/banknotes_handling.wav", "from": 0.26, "to": 0.82, "lead": 0.02, "pk": -28, "fadeOut": 0.1 }],
+    "number": [{ "file": "public/sfx/md/boom_lowhit.wav", "from": 0.0, "to": 1.8, "pk": -23, "fadeOut": 0.8, "width": 0 }]
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "lufs": -14,
+  "ceiling": -1.7,
+  "vo": {
+    "file": "public/audio/bihar/vo-tight.wav",
+    "lufs": -15
+  },
+  "cues": {}
+}
