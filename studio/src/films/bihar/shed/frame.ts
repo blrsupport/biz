@@ -1,7 +1,7 @@
 // Bihar Mushroom: sequence "shed". Everything that is drawn at time t, as a display list, back to front.
 // The generic view paints this list and the dry run checks it, so what is checked is what is drawn.
 import { buildCrate } from "../../../assets/props/crate.ts";
-import { growBag, hurricaneLamp, spawnBottle } from "../../../assets/props/mushroom.ts";
+import { growBag, hurricaneLamp, lota, spawnBottle } from "../../../assets/props/mushroom.ts";
 import { buildCalendar, buildTin } from "../../../assets/props/tin.ts";
 import { shedBack, shedFloor, shedJamb, shedRope, shedTop } from "../../../assets/sets/shed.ts";
 import { fade, fill, group, paint, rect, shadow, type as written, type FrameList, type Item } from "../../../engine/draw/list.ts";
@@ -12,7 +12,7 @@ import { area, type Pt } from "../../../engine/geom/vec.ts";
 import { LOOKS, type LookId } from "../../../engine/look/looks.ts";
 import type { Actor, Solved } from "../../../engine/motion/actor.ts";
 import { hash } from "../../../engine/motion/track.ts";
-import { BACKROW_DEPTH, BACK_ROPES, BOTTLE_DULL, BOTTLE_GOOD, BOTTLE_SCALE, CAL, CRATES_L, CRATES_R, LAMP_AT, ROPES, SET, SHED, SHED_PALETTE, TIERS, TIN_AT, WALL_DEPTH, shedTake } from "./take.ts";
+import { BACKROW_DEPTH, BACK_ROPES, BOTTLE_DULL, BOTTLE_GOOD, BOTTLE_SCALE, CAL, CRATES_L, CRATES_R, LAMP_AT, LOTA_AT, ROPES, SET, SHED, SHED_PALETTE, TIERS, TIN_AT, WALL_DEPTH, shedTake } from "./take.ts";
 
 const { U, GY, W: FW, HGT } = SHED;
 const P = SHED_PALETTE;
@@ -21,7 +21,7 @@ const OVER = ["wall"];
 const flat = { form: "flat", ink: 0, paper: false } as const;
 
 /** Soft shadows under the feet; they fade as a foot leaves the ground. */
-function footContacts(id: string, a: Actor, s: Solved): Shape[] {
+export function footContacts(id: string, a: Actor, s: Solved): Shape[] {
   return (["L", "R"] as const).map((k) => {
     const f = s.feet[k];
     const lift = Math.min(1, f.lift / (0.3 * U));
@@ -35,20 +35,27 @@ export const crate = (id: string, c: { x: number; wLow: number; wTop: number }):
   ...buildCrate(`${id}/low`, [c.x, GY - 0.1 * U - 0.5 * U], c.wLow, 1.0 * U),
   ...buildCrate(`${id}/top`, [c.x + 6, GY - 1.1 * U - 0.4 * U], c.wTop, 0.8 * U),
 ];
-const CRATES_LEFT = crate("crateL", CRATES_L);
-const CRATES_RIGHT = crate("crateR", CRATES_R);
-const STATIC_CONTACTS: Shape[] = [CRATES_L.x, CRATES_R.x, 590, 1530].map((x, i) =>
+export const CRATES_LEFT = crate("crateL", CRATES_L);
+export const CRATES_RIGHT = crate("crateR", CRATES_R);
+export const STATIC_CONTACTS: Shape[] = [CRATES_L.x, CRATES_R.x, 590, 1530].map((x, i) =>
   shape(`contact/s${i}`, "floor", ellipse([x, GY - 0.1 * U + 4], (i < 2 ? 0.6 : 0.16) * U, 0.05 * U, 0, 3), { ...flat, tone: "deep", opacity: 0.42 }),
 );
-const ROPE_SHAPES: Shape[] = ROPES.map((x, i) => shedRope(`rope/${i}`, x, SET.poleY, TIERS[1] + 0.3 * U));
+export const ROPE_SHAPES: Shape[] = ROPES.map((x, i) => shedRope(`rope/${i}`, x, SET.poleY, TIERS[1] + 0.3 * U));
 const BACK_POLE: Shape[] = [shape("back/pole", "bamboo", rect(700, SET.poleY - 0.15 * U, 820, 0.1 * U), { ...flat, tone: "shade" })];
-const BACK_BAGS: Shape[] = [
+export const BACK_BAGS: Shape[] = [
   ...BACK_POLE,
   ...BACK_ROPES.map((x, i) => shedRope(`back/rope${i}`, x, SET.poleY - 0.1 * U, TIERS[1] + 0.2 * U)),
   ...BACK_ROPES.flatMap((x, i) => [0, 1].flatMap((k) => growBag(`back/bag${i}_${k}`, { top: [x, TIERS[k] - 0.1 * U], u: U, scale: 0.86, seed: 20 + i * 2 + k, myc: 0.5 + 0.3 * hash(i + k) }).shapes)),
 ];
 const DULL = spawnBottle("bottle.dull", { at: BOTTLE_DULL, u: U, bad: 1, scale: BOTTLE_SCALE }).shapes;
 const LAMP = hurricaneLamp("lamp", { at: LAMP_AT, u: U, lit: 0 }).shapes;
+const LOTA = lota("lota", { at: LOTA_AT, u: U }).shapes;
+/** the doorway, for people standing in it: hidden by the near part of the left wall and under the lintel, not by the back jamb */
+export const DOOR_CLIP: Pt[] = (() => {
+  const [o0, o1, o2, o3] = SET.opening;
+  const k = (o3[1] - o2[1]) / (o3[0] - o2[0]);
+  return [[o0[0] + 1500, o0[1] + 600], o1, o2, [o3[0] + 1500, o3[1] + 1500 * k]];
+})();
 
 const big = (shapes: readonly Shape[], min = 420) => shapes.filter((s) => Math.abs(area(s.pts)) > min);
 
@@ -123,11 +130,7 @@ export function shedFrame(t: number, lookId: LookId = "A"): FrameList {
     paint("door", 0, [...SET.doorSolid, ...SET.doorView]),
   ];
   if (ga && gb) {
-    // they stand in the doorway: hidden by the near part of the left wall and under the lintel, not by the back jamb
-    const [o0, o1, o2, o3] = SET.opening;
-    const k = (o3[1] - o2[1]) / (o3[0] - o2[0]);
-    const door: Pt[] = [[o0[0] + 1500, o0[1] + 600], o1, o2, [o3[0] + 1500, o3[1] + 1500 * k]];
-    items.push(group("gossips", 0, [paint("gossips.fig", 0, [...gb.shapes, ...ga.shapes])], { clip: [door] }));
+    items.push(group("gossips", 0, [paint("gossips.fig", 0, [...gb.shapes, ...ga.shapes])], { clip: [DOOR_CLIP] }));
   }
   items.push(
     paint("door.frame", 0, SET.doorFrame),
@@ -137,7 +140,7 @@ export function shedFrame(t: number, lookId: LookId = "A"): FrameList {
     written("type.spawn", WALL_DEPTH, { kind: "phrase", ...ty.spawn }, OVER),
     paint("rack", 0, [...SET.rack, ...ROPE_SHAPES, ...bagShapes]),
     paint("contacts", 0, [...STATIC_CONTACTS, ...footContacts("sanjeev", tk.sanjeev, ss)]),
-    paint("props", 0, [...CRATES_LEFT, ...CRATES_RIGHT, ...tin.shapes, ...LAMP, ...DULL, ...droppedShapes]),
+    paint("props", 0, [...CRATES_LEFT, ...CRATES_RIGHT, ...tin.shapes, ...LAMP, ...LOTA, ...DULL, ...droppedShapes]),
   );
   // the bottle catches the doorlight once he holds it up
   const g = tk.glow.value(t);

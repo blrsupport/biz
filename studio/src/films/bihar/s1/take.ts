@@ -128,7 +128,7 @@ function build() {
   lookAt(trader, GIVE, { at: tTaken - 0.2, dur: 0.2 });
   cues.push({ t: tTaken, what: "notes.take", x: 540 });
 
-  const armsF = { L: [-0.42, 0.16] as Pt, R: [-0.36, -0.26] as Pt };
+  const armsF = { L: [-0.38, 0.1] as Pt, R: [-0.36, -0.26] as Pt };
   const armsT = { R: [0.42, 0.16] as Pt, L: [0.36, -0.26] as Pt };
   let sackA: (t: number) => { c: Pt; tilt: number } = () => ({ c: REST_A, tilt: 0 });
   const onSack = (rel: Pt) => (t: number): Pt => add(sackA(t).c, [rel[0] * SACK.w * U, rel[1] * SACK.h * U]);
@@ -249,29 +249,28 @@ function build() {
   const tw = trader.walkTo(-430, { start: tTo + 0.5, pace: 1.8, step: 1.3 });
   feel(trader, EASY_T, { at: tTo + 0.3, dur: 0.3 });
   lookAt(farmer, [TX - 1.2 * U, GY - 4.4 * U], { at: tTo + 0.45 });
-  nod(farmer, { at: tTo + 0.8, amount: 0.1 });
-  const fs = farmer.walkTo(398, { start: tTo + 0.85, pace: 1.85, step: 1.25 });
+  nod(farmer, { at: tTo + 0.3, amount: 0.1 });
+  const fs = farmer.walkTo(332, { start: tTo + 0.5, pace: 2.0, step: 1.3 });
   let sackB: (t: number) => { c: Pt; tilt: number } = () => ({ c: REST_B, tilt: 0 });
   const onSackB = (rel: Pt) => (t: number): Pt => add(sackB(t).c, [rel[0] * SACK.w * U, rel[1] * SACK.h * U]);
   lookAt(farmer, REST_B, { at: fs.arrive - 0.3 });
   const tGrabB = Math.max(fs.arrive + 0.28, tSwing - 0.5);
-  farmer.drop.to(0.6, { at: tGrabB - 0.02, dur: 0.3, w: WEIGHT.body, windup: 0 });
+  farmer.drop.to(0.74, { at: tGrabB - 0.02, dur: 0.3, w: WEIGHT.body, windup: 0 });
   farmer.bend.to(-0.45, { at: tGrabB, dur: 0.3, w: WEIGHT.body, windup: 0 });
-  reach(farmer, "L", onSackB([-0.36, -0.46])(tGrabB), { at: tGrabB, dur: 0.28, hand: HANDS.grip, look: false, body: false, contact: true, pin: onSackB([-0.36, -0.46]), layer: "front" });
+  reach(farmer, "L", onSackB([-0.08, -0.44])(tGrabB), { at: tGrabB, dur: 0.28, hand: HANDS.grip, look: false, body: false, contact: true, pin: onSackB([-0.08, -0.44]), layer: "front" });
   reach(farmer, "R", onSackB([0.3, -0.46])(tGrabB + 0.03), { at: tGrabB + 0.03, dur: 0.28, hand: HANDS.grip, look: false, body: false, contact: true, pin: onSackB([0.3, -0.46]), layer: "back" });
   feel(farmer, STRAIN, { at: tGrabB + 0.05, dur: 0.14 });
   cues.push({ t: tGrabB + 0.08, what: "heave", x: 330 });
   // up and round: the sack comes off the ground, he rises with it and lets it fly at us
   const tLiftB = tGrabB + 0.06;
-  const HIGH: Pt = [300, GY - 3.0 * U];
+  const HIGH: Pt = [300, GY - 2.5 * U];
   const pathB = new Path2(REST_B);
-  pathB.to(HIGH, { at: tSwing, dur: tSwing - tLiftB, w: WEIGHT.heavy, windup: 0, overshoot: 0, bow: 0.15 });
-  farmer.drop.to(0.08, { at: tSwing + 0.04, dur: tSwing - tLiftB, w: WEIGHT.heavy, windup: 0 });
-  farmer.bend.to(0.06, { at: tSwing + 0.06, dur: tSwing - tLiftB, w: WEIGHT.heavy, windup: 0 });
-  farmer.lean.to(0.08, { at: tSwing, dur: tSwing - tLiftB, w: WEIGHT.heavy, windup: 0 });
+  pathB.to(HIGH, { at: tSwing, dur: tSwing - tLiftB, w: WEIGHT.heavy, windup: 0, overshoot: 0, bow: 0 });
+  farmer.drop.to(0.3, { at: tSwing - 0.02, dur: tSwing - tLiftB, w: WEIGHT.heavy, windup: 0 });
+  farmer.bend.to(0.1, { at: tSwing, dur: tSwing - tLiftB, w: WEIGHT.heavy, windup: 0 });
   const tRel = tSwing + 0.08;
-  release(farmer, "L", { at: tRel + 0.3, dur: 0.3 });
-  release(farmer, "R", { at: tRel + 0.32, dur: 0.3 });
+  release(farmer, "L", { at: tRel + 0.04, dur: 0.3 });
+  release(farmer, "R", { at: tRel + 0.06, dur: 0.3 });
   farmer.turnTo(-0.45, { at: tRel + 0.3, dur: 0.35 });
   feel(farmer, PROUD, { at: tRel + 0.4, dur: 0.3 });
   cues.push({ t: tRel, what: "whoosh", x: 540 });
@@ -343,12 +342,12 @@ function build() {
   const at1 = under(tHaryana, DEPTH.type, 92, 430);
   const at2 = under(tOne, DEPTH.type, 92, 430);
   const at3 = under(tBack, DEPTH.type, 92, 342);
-  const at4 = under(tEarly, DEPTH.type, 92, 342);
+  const at4 = under(tEarly, DEPTH.type, 92, 336);
   const type = {
     haryana: { x: at1[0], y: at1[1], size: 160, maxW: 760, lines: [{ lead: "HARYANA", text: "", at: tHaryana }], out: tToday + 0.25 } as PhraseCue,
     oneMan: { x: at2[0], y: at2[1], size: 160, maxW: 760, lines: [{ lead: "ONE MAN", text: "", at: tOne }], out: tSells - 0.35 } as PhraseCue,
     back: { x: at3[0], y: at3[1], size: 104, maxW: 790, leading: 1.4, lines: [{ text: "BACK TO", at: tBack }, { lead: "HARYANA", text: "", at: tHaryana2 }], out: tHaryana2 + 1.1 } as PhraseCue,
-    early: { x: at4[0], y: at4[1], size: 104, maxW: 790, leading: 1.4, lines: [{ text: "EARLY", at: tEarly }, { lead: "2000s", text: "", at: t2000 }], out: tCover - 0.2 } as PhraseCue,
+    early: { x: at4[0], y: at4[1], size: 100, maxW: 790, leading: 1.4, lines: [{ text: "EARLY", at: tEarly }, { lead: "2000s", text: "", at: t2000 }], out: tCover - 0.2 } as PhraseCue,
   };
 
   return {

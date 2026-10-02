@@ -2,7 +2,7 @@
 
 ## Budget (the user's limit is $50 of credit, not meter points)
 - Start: user reported $48 left on 2 Oct 2026 (about $2 already spent on setup). Stop line: if the credit falls to $8 with the film not delivered, stop, save state, tell the user what is left and ask.
-- Readings: start $48 (2 Oct); after Stop A $37 (2 Oct; $11 used on setup, board, cast and phase 1 of both worlds). Next: after the build, before the full render.
+- Readings: start $48 (2 Oct); after Stop A $37 (2 Oct; $11 used on setup, board, cast and phase 1 of both worlds); mid-build $22 (2 Oct; $15 on phase 2, well ahead of the table). Dropped to the floor: both workers told to wrap up in 6 turns, simplest form for anything unbuilt, no more sheets. Next: after the build, before the full render.
 - Phase 2 caps (to stay above the line): about 40 more turns per worker, one preview sheet per sequence, simplest board form where a beat is costly.
 
 Read this and board.md at the start of every session. Update it after every sequence. Nothing that matters lives only in a conversation.

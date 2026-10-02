@@ -266,7 +266,7 @@ export function mudHouse(id: string, o: { x: number; foot: number; u: number; se
 export function thatchShed(id: string, o: { x: number; foot: number; u: number; seed?: number; wall?: string }): { back: Shape[]; dark: Shape[]; front: Shape[]; door: { x0: number; x1: number; y0: number; y1: number } } {
   const { x, foot: g, u } = o;
   const seed = o.seed ?? 1;
-  const mud = o.wall ?? mud;
+  const mud = o.wall ?? "vil.mud";
   const W = 2.3 * u;
   const eave = g - 3.6 * u;
   const door = { x0: x - 0.85 * u, x1: x + 0.6 * u, y0: g - 3.0 * u, y1: g };

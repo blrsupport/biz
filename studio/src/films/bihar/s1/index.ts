@@ -21,10 +21,12 @@ export const S1_SEQ: Sequence = {
   marks: tk.marks,
   walkers: [
     { name: "farmer", actor: tk.farmer },
-    { name: "trader", actor: tk.trader },
+    { name: "trader", actor: tk.trader, to: tk.marks.traderOut - 0.6 },
   ],
   allow: [
     { id: /^notes\//, why: "the banknotes come out of a pocket, pass from hand to hand, and go into a pocket" },
     { id: /^bird\d/, why: "the birds fly in over the right edge of the frame and out over the left" },
+    { id: /^sackB\//, why: "the last sack is swung from the farmer's hands past the lens: it grows fast and leaves at the right" },
+    { id: /^trader\b/, why: "the trader walks out of the frame at the left with his sack" },
   ],
 };

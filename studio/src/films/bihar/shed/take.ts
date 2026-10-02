@@ -49,8 +49,9 @@ export const CRATES_R = { x: 1130, wLow: 1.0 * U, wTop: 0.86 * U };
 export const CRATE_TOP = GY - 0.1 * U - 1.0 * U - 0.8 * U - 0.1 * U;
 export const BOTTLE_DULL: Pt = [372, CRATE_TOP + 4];
 export const BOTTLE_GOOD: Pt = [442, CRATE_TOP + 4];
-/** the hurricane lamp on the bench, unlit here (it is lit in `seed`) */
-export const LAMP_AT: Pt = [302, CRATE_TOP + 2];
+/** the hurricane lamp hangs on the near post, unlit here (it is lit in `seed`); the lota of water stands on the bench */
+export const LAMP_AT: Pt = [604, 846];
+export const LOTA_AT: Pt = [304, CRATE_TOP + 2];
 /** the bottles are drawn a size up from the library default, so the one he holds up reads on a phone */
 export const BOTTLE_SCALE = 1.35;
 /** the state of the bags when the take ends (seed carries on from it) */
@@ -147,7 +148,7 @@ function build() {
   gossipA.headTurn.to(ht, { at: tEng + 1.3, dur: 0.22, w: WEIGHT.head });
   feel(gossipB, JEER, { at: tEng + 0.2, dur: 0.25 });
   shrug(gossipB, { at: tEng + 0.45, hold: 0.08, amount: 0.6 });
-  shrug(gossipB, { at: tEng + 1.2, hold: 0.08, amount: 0.6 });
+  shrug(gossipB, { at: tEng + 1.4, hold: 0.08, amount: 0.6 });
   gossipB.lean.to(-0.08, { at: tEng + 0.5, dur: 0.3, w: WEIGHT.body });
   gossipB.lean.to(0.03, { at: tEng + 1.3, dur: 0.4, w: WEIGHT.body });
   // Sanjeev, his back to them, pats the bag below the one he hung
@@ -245,7 +246,7 @@ function build() {
   const split = new Track(0);
   const tTear = W("figures");
   split.to(1, { at: tTear + 0.2, dur: 0.36, w: WEIGHT.hand, windup: 0 });
-  reach(sanjeev, "L", onBag(-0.36, -0.33), { at: tTear + 0.2, dur: 0.36, hand: HANDS.grip, contact: true, pin: true, layer: "front", look: false, body: false });
+  reach(sanjeev, "L", onBag(-0.5, -0.36), { at: tTear + 0.2, dur: 0.36, hand: HANDS.grip, contact: true, pin: true, layer: "front", look: false, body: false });
   reach(sanjeev, "R", onBag(-0.84, -0.33), { at: tTear + 0.22, dur: 0.36, hand: HANDS.grip, contact: true, pin: true, layer: "back", look: false, body: false });
   cues.push({ t: tTear + 0.05, what: "plastic", x: LIE[0] - 0.6 * U });
   const tRub = W("real");
