@@ -23,6 +23,8 @@ export const HOME_SEQ: Sequence = {
   allow: [
     { id: /^sackB\//, why: "the sack from s1 goes on past the lens and off to the right over the first frames" },
     { id: /^(bigshed|lane|near|house|yard|fields|banana|straw|tree|pump|hills|city)/, why: "the camera pushes into the doorway: the set rushes out past the edges of the frame" },
+    { id: /^handful\//, why: "he takes a handful out of the straw stack: it is part of the stack until his hand closes on it" },
+    { id: /^(trunk|degree|bag[LR])\//, why: "they leave and come back with him, off the left edge, while he is away in Solan" },
     { id: /^sanjeev\b/, why: "he walks into the dark of the doorway, behind the wall right of the door" },
   ],
 };
