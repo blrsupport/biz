@@ -24,9 +24,11 @@ export const LAB_SEQ: Sequence = {
     { name: "sanjeev", actor: tk.sanjeev },
     { name: "f1", actor: tk.f1 },
     { name: "f2", actor: tk.f2 },
+    { name: "f3", actor: tk.f3 },
   ],
   allow: [
     { id: /^drum\/steam/, why: "steam puffs rise from the drum and thin out to nothing" },
+    { id: /^(bottle2?|bag)\//, why: "the bottle comes up out of the drum; bottle and bag go off left with the farmers" },
     { id: /^near\//, why: "the sack close to the lens lifts up out of the frame" },
     { id: /^jamb\//, why: "the door jamb close to the lens slides in across the frame" },
   ],
