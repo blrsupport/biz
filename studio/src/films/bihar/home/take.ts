@@ -67,13 +67,13 @@ function build() {
   cues.push({ t: 16.6, what: "hen" }, { t: 20.6, what: "horn.far" }, { t: W("growing"), what: "door.brush", x: dc[0] });
 
   // across the sky, one block at a time
-  const a1 = under(W("sanjeev"), DEPTH.type, 92, 336);
+  const a1 = under(W("sanjeev"), DEPTH.type, 92, 330);
   const a2 = under(W("bit"), DEPTH.type, 92, 430);
   const a3 = under(W("nalanda"), DEPTH.type, 92, 430);
   const a4 = under(W("2002"), DEPTH.type, 92, 430);
   const a5 = under(W("solan"), DEPTH.type, 92, 336);
   const type = {
-    name: { x: a1[0], y: a1[1], size: 104, maxW: 790, leading: 1.4, lines: [{ text: "SANJEEV", at: W("sanjeev") }, { lead: "KUMAR", text: "", at: W("kumar") }], out: W("at") - 0.3 } as PhraseCue,
+    name: { x: a1[0], y: a1[1], size: 100, maxW: 790, leading: 1.4, lines: [{ text: "SANJEEV", at: W("sanjeev") }, { lead: "KUMAR", text: "", at: W("kumar") }], out: W("at") - 0.3 } as PhraseCue,
     bit: { x: a2[0], y: a2[1], size: 150, maxW: 720, lines: [{ lead: "BIT SINDRI", text: "", at: W("bit") }], out: W("now") + 0.2 } as PhraseCue,
     nalanda: { x: a3[0], y: a3[1], size: 150, maxW: 700, lines: [{ lead: "NALANDA", text: "", at: W("nalanda") }], out: W("go") - 0.4 } as PhraseCue,
     year: { x: a4[0], y: a4[1], size: 150, maxW: 700, lines: [{ text: "2002", at: W("2002") }], out: W("solan") - 0.15 } as PhraseCue,

@@ -24,7 +24,9 @@ Read this and board.md at the start of every session. Update it after every sequ
 
 | Seq | Seconds | Dry run | Stills looked at | Draft with voice sent | Review scores (same film, motion, staging, type, joins, life) | Status |
 |---|---|---|---|---|---|---|
-| s1 | 0.00 - 12.38 | PASSED (2 Oct, phase 1) | s1_p1 (0.5, 2.8, 5.3, 7.6) | | | beats 1-2 built; beat 3 (lens pass to home) is phase 2 |
+| s1 | 0.00 - 12.38 | PASSED (2 Oct, phase 2) | s1_p1 (phase 1 only) | | | built; beat 3 (trader out, sack B swung past the lens, screen space, covers 12.2) unseen |
+| home | 12.28 - 34.74 | PASSED (2 Oct) | none (budget) | | | SIMPLEST: Sanjeev walks in and stands while type lands; no trunk, degree, father, straw, Solan walk or grow bags; ends walking into the big shed's dark doorway, camera pushes in (dark by 34.62) |
+| today | 88.47 - 110.33 | PASSED (2 Oct) | none (budget) | | | SIMPLEST: jamb slides off by 88.9; drift over lane with 3 huts + bags, sack stack, SANJEEV_NOW; all 8 type blocks; no porters, trader or silhouettes; turns from the city on "chose" |
 
 | shed | 34.70 - 52.79 | PASSED (2 Oct, phase 2) | out/boards/shed_p1.png (phase 1 only) | | | built; style-frame notes applied (bottle at arm's length, cream oyster fans, no split) but not looked at again |
 | seed | 52.79 - 64.91 | PASSED (2 Oct) | none (budget) | | | built from board, unseen; watering with lota; three sacks, third covers lens |
@@ -45,9 +47,11 @@ lab (simplest form): same room whitewashed (`LAB_PALETTE`), window x 1420, racks
 
 ### Village (s1; home and today will reuse it)
 - Set `src/assets/sets/village.ts` (pieces placed per sequence, sized by `u`), props `src/assets/props/village.ts`. Lights `VILLAGE_LIGHTS` (morning left, afternoon right, sunrise left).
-- s1 layers: sky (screen), far hills x -1900..320 and city x 780..1900 at depth 4 (horizon y 1012), fields 1.6, house/shed/bananas/straw/trees at 0.35 (foot y 1262, u 112: house x 300, shed x 1000, door x 895..1057), pump 0.12 at x 1160, lane 0 (GY 1500), grass -0.3.
-- Marks: trader (IRAKI) x 360 facing right; farmer (BUYER) walks 1190 -> 748, out to 880, back to 712. Sack A rests at 458 and ends in the trader's arms; sack B rests at 232 (for beat 3's swing to the lens).
-- Type in the sky at screen y 270-440: heads reach y ~480. Sacks are a stand-in (`wovenSack`) until `mushroom.ts` lands.
+- Shared lane: `src/films/bihar/s1/lane.ts`. Far hills x -700..900 and city x 780..1900 at depth 4 (horizon y 1012), fields 1.6, house x 300 / bananas / straw / trees at 0.35 (foot y 1262, u 112), pump 0.12 at x 1000, lane 0 (GY 1500), grass -0.3. The small shed is gone from the house layer.
+- s1: trader (IRAKI) x 360, out left from 9.0; farmer (BUYER) 1190 -> 748 -> 880 -> 712 -> 332. Sacks are `spawnSack`. Sack B leaves his hands at 10.94 and the screen-space pass (`passItems`) covers the frame by 12.2; home draws its end to 12.78.
+- home: afternoon light (sun right). Sanjeev x -260 -> 600, then into the full-size shed (`BIG_SHED`, x 1700, u 261, door x 1478..1857); the camera ends at the door centre, zoom 3.3.
+- today: sunrise light; the screen-space `sil` jamb slides right, 88.47-88.9. Huts x -700 / 1250 / 1700 (house layer), sack stack x 230, SANJEEV_NOW x 660.
+- Type sits in the sky at screen y 260-440, because heads reach about y 480.
 
 ## Files this film owns outside its folder
 
