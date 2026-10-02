@@ -1,9 +1,782 @@
 {
-  "lufs": -14,
-  "ceiling": -1.7,
-  "vo": {
-    "file": "public/audio/bihar/vo-tight.wav",
-    "lufs": -15
+ "lufs": -14.0,
+ "ceiling": -1.7,
+ "vo": {
+  "file": "public/audio/bihar/vo-tight.wav",
+  "lufs": -15.0
+ },
+ "music": {
+  "file": "public/audio/bihar/music_suhana_110400.wav",
+  "at": 1.5,
+  "to": 108.8,
+  "lufs": -30.0,
+  "duck": 4.0,
+  "fadeIn": 0.5,
+  "fadeOut": 0.5,
+  "keys": [
+   [
+    0,
+    0
+   ],
+   [
+    33.4,
+    0
+   ],
+   [
+    34.0,
+    -2.6
+   ],
+   [
+    35.0,
+    -2.6
+   ],
+   [
+    35.8,
+    0
+   ],
+   [
+    70.2,
+    0
+   ],
+   [
+    70.6,
+    -1.6
+   ],
+   [
+    71.6,
+    -1.6
+   ],
+   [
+    72.2,
+    0
+   ],
+   [
+    90.8,
+    0
+   ],
+   [
+    91.2,
+    -1.4
+   ],
+   [
+    92.2,
+    -1.4
+   ],
+   [
+    92.8,
+    0
+   ],
+   [
+    105.6,
+    0
+   ],
+   [
+    106.0,
+    -1.6
+   ],
+   [
+    107.0,
+    -1.6
+   ],
+   [
+    107.6,
+    0
+   ]
+  ]
+ },
+ "amb": [
+  {
+   "file": "public/sfx/bihar/amb_village_morning.mp3",
+   "from": 20,
+   "pk": -46,
+   "keys": [
+    [
+     0,
+     0
+    ],
+    [
+     34.4,
+     0
+    ],
+    [
+     35.2,
+     -40
+    ],
+    [
+     88.2,
+     -40
+    ],
+    [
+     88.9,
+     0
+    ]
+   ]
   },
-  "cues": {}
+  {
+   "file": "public/sfx/bihar/amb_shed_interior.mp3",
+   "from": 20,
+   "pk": -44,
+   "keys": [
+    [
+     0,
+     -40
+    ],
+    [
+     34.4,
+     -40
+    ],
+    [
+     35.2,
+     0
+    ],
+    [
+     88.2,
+     0
+    ],
+    [
+     88.9,
+     -40
+    ]
+   ]
+  },
+  {
+   "file": "public/sfx/bihar/amb_village_walla.mp3",
+   "from": 30,
+   "pk": -48,
+   "keys": [
+    [
+     0,
+     -40
+    ],
+    [
+     68.5,
+     -40
+    ],
+    [
+     69.5,
+     0
+    ],
+    [
+     88.2,
+     0
+    ],
+    [
+     88.9,
+     -40
+    ]
+   ]
+  }
+ ],
+ "cues": {
+  "birds": [],
+  "glint": [],
+  "lamp": [],
+  "water": [],
+  "steam": [],
+  "hen": [],
+  "horn.far": [],
+  "notes": [
+   {
+    "file": "public/sfx/bihar/banknotes.wav",
+    "variants": [
+     [
+      0.26,
+      0.66
+     ],
+     [
+      0.94,
+      1.34
+     ],
+     [
+      3.86,
+      4.2
+     ],
+     [
+      1.81,
+      1.95
+     ]
+    ],
+    "lead": 0.02,
+    "pk": -31,
+    "fadeOut": 0.08
+   }
+  ],
+  "notes.take": [
+   {
+    "file": "public/sfx/bihar/banknotes.wav",
+    "from": 4.69,
+    "to": 5.0,
+    "lead": 0.02,
+    "pk": -29,
+    "fadeOut": 0.08
+   }
+  ],
+  "step.farmer": [
+   {
+    "file": "public/sfx/bihar/steps_dirt_barefoot.wav",
+    "variants": [
+     [
+      0.59,
+      0.91
+     ],
+     [
+      1.68,
+      2.0
+     ],
+     [
+      2.73,
+      3.05
+     ],
+     [
+      3.77,
+      4.09
+     ],
+     [
+      4.85,
+      5.17
+     ],
+     [
+      5.91,
+      6.23
+     ],
+     [
+      1.16,
+      1.48
+     ],
+     [
+      2.19,
+      2.51
+     ],
+     [
+      3.25,
+      3.57
+     ],
+     [
+      4.31,
+      4.63
+     ],
+     [
+      5.39,
+      5.71
+     ]
+    ],
+    "lead": 0.02,
+    "pk": -31,
+    "fadeOut": 0.1
+   }
+  ],
+  "step.trader": [
+   {
+    "file": "public/sfx/bihar/steps_dirt_barefoot.wav",
+    "variants": [
+     [
+      2.19,
+      2.51
+     ],
+     [
+      4.31,
+      4.63
+     ],
+     [
+      1.16,
+      1.48
+     ]
+    ],
+    "lead": 0.02,
+    "pk": -30,
+    "fadeOut": 0.1
+   }
+  ],
+  "step.sanjeev": [
+   {
+    "file": "public/sfx/bihar/steps_dirt_barefoot.wav",
+    "variants": [
+     [
+      1.16,
+      1.48
+     ],
+     [
+      2.19,
+      2.51
+     ],
+     [
+      3.25,
+      3.57
+     ],
+     [
+      4.31,
+      4.63
+     ],
+     [
+      5.39,
+      5.71
+     ],
+     [
+      0.59,
+      0.91
+     ],
+     [
+      1.68,
+      2.0
+     ],
+     [
+      2.73,
+      3.05
+     ],
+     [
+      3.77,
+      4.09
+     ],
+     [
+      4.85,
+      5.17
+     ],
+     [
+      5.91,
+      6.23
+     ]
+    ],
+    "lead": 0.02,
+    "pk": -31,
+    "fadeOut": 0.1
+   }
+  ],
+  "step.gossipA": [
+   {
+    "file": "public/sfx/bihar/steps_dirt_barefoot.wav",
+    "variants": [
+     [
+      1.68,
+      2.0
+     ],
+     [
+      3.77,
+      4.09
+     ],
+     [
+      5.91,
+      6.23
+     ],
+     [
+      2.73,
+      3.05
+     ],
+     [
+      4.85,
+      5.17
+     ],
+     [
+      0.59,
+      0.91
+     ]
+    ],
+    "lead": 0.02,
+    "pk": -35,
+    "fadeOut": 0.1
+   }
+  ],
+  "step.gossipB": [
+   {
+    "file": "public/sfx/bihar/steps_dirt_barefoot.wav",
+    "variants": [
+     [
+      3.25,
+      3.57
+     ],
+     [
+      5.39,
+      5.71
+     ],
+     [
+      1.16,
+      1.48
+     ],
+     [
+      4.31,
+      4.63
+     ],
+     [
+      2.19,
+      2.51
+     ],
+     [
+      5.91,
+      6.23
+     ]
+    ],
+    "lead": 0.02,
+    "pk": -36,
+    "fadeOut": 0.1
+   }
+  ],
+  "step.porter1": [
+   {
+    "file": "public/sfx/bihar/steps_dirt_barefoot.wav",
+    "variants": [
+     [
+      2.73,
+      3.05
+     ],
+     [
+      4.85,
+      5.17
+     ],
+     [
+      1.68,
+      2.0
+     ],
+     [
+      3.77,
+      4.09
+     ]
+    ],
+    "lead": 0.02,
+    "pk": -33,
+    "fadeOut": 0.1
+   }
+  ],
+  "step.porter2": [
+   {
+    "file": "public/sfx/bihar/steps_dirt_barefoot.wav",
+    "variants": [
+     [
+      5.39,
+      5.71
+     ],
+     [
+      1.16,
+      1.48
+     ],
+     [
+      3.25,
+      3.57
+     ],
+     [
+      2.19,
+      2.51
+     ]
+    ],
+    "lead": 0.02,
+    "pk": -34,
+    "fadeOut": 0.1
+   }
+  ],
+  "step.f1": [
+   {
+    "file": "public/sfx/bihar/steps_dirt_barefoot.wav",
+    "variants": [
+     [
+      0.59,
+      0.91
+     ],
+     [
+      2.73,
+      3.05
+     ],
+     [
+      4.85,
+      5.17
+     ],
+     [
+      1.68,
+      2.0
+     ],
+     [
+      3.77,
+      4.09
+     ],
+     [
+      5.91,
+      6.23
+     ],
+     [
+      1.16,
+      1.48
+     ],
+     [
+      3.25,
+      3.57
+     ]
+    ],
+    "lead": 0.02,
+    "pk": -34,
+    "fadeOut": 0.1
+   }
+  ],
+  "step.f2": [
+   {
+    "file": "public/sfx/bihar/steps_dirt_barefoot.wav",
+    "variants": [
+     [
+      4.31,
+      4.63
+     ],
+     [
+      2.19,
+      2.51
+     ],
+     [
+      5.39,
+      5.71
+     ],
+     [
+      3.25,
+      3.57
+     ],
+     [
+      1.16,
+      1.48
+     ],
+     [
+      5.91,
+      6.23
+     ],
+     [
+      1.68,
+      2.0
+     ],
+     [
+      3.77,
+      4.09
+     ]
+    ],
+    "lead": 0.02,
+    "pk": -35,
+    "fadeOut": 0.1
+   }
+  ],
+  "steps": [
+   {
+    "file": "public/sfx/bihar/steps_dirt_barefoot.wav",
+    "variants": [
+     [
+      3.77,
+      4.09
+     ],
+     [
+      1.68,
+      2.0
+     ],
+     [
+      5.39,
+      5.71
+     ]
+    ],
+    "lead": 0.02,
+    "pk": -32,
+    "fadeOut": 0.1
+   }
+  ],
+  "scuff": [
+   {
+    "file": "public/sfx/bihar/steps_dirt_barefoot.wav",
+    "variants": [
+     [
+      0.59,
+      0.91
+     ],
+     [
+      3.25,
+      3.57
+     ],
+     [
+      5.91,
+      6.23
+     ],
+     [
+      2.19,
+      2.51
+     ],
+     [
+      4.85,
+      5.17
+     ]
+    ],
+    "lead": 0.02,
+    "pk": -38,
+    "fadeOut": 0.1
+   }
+  ],
+  "heave": [
+   {
+    "file": "public/sfx/bihar/sack_down.wav",
+    "from": 0.02,
+    "to": 0.6,
+    "lead": 0.02,
+    "pk": -31,
+    "fadeOut": 0.15
+   }
+  ],
+  "thud.sack": [
+   {
+    "file": "public/sfx/bihar/sack_down.wav",
+    "from": 0.02,
+    "to": 0.6,
+    "lead": 0.02,
+    "pk": -24,
+    "fadeOut": 0.15
+   }
+  ],
+  "thud": [
+   {
+    "file": "public/sfx/bihar/sack_down.wav",
+    "from": 0.02,
+    "to": 0.6,
+    "lead": 0.02,
+    "pk": -25,
+    "fadeOut": 0.15
+   }
+  ],
+  "pat": [
+   {
+    "file": "public/sfx/bihar/sack_down.wav",
+    "from": 0.02,
+    "to": 0.4,
+    "lead": 0.02,
+    "pk": -33,
+    "fadeOut": 0.1
+   }
+  ],
+  "turn": [
+   {
+    "file": "public/sfx/bihar/page_turn.wav",
+    "from": 0.05,
+    "to": 0.7,
+    "lead": 0.02,
+    "pk": -32,
+    "fadeOut": 0.1
+   }
+  ],
+  "page": [
+   {
+    "file": "public/sfx/bihar/page_turn.wav",
+    "from": 0.05,
+    "to": 0.45,
+    "lead": 0.02,
+    "pk": -33,
+    "fadeOut": 0.08
+   }
+  ],
+  "rope": [
+   {
+    "file": "public/sfx/bihar/rope_creak.wav",
+    "variants": [
+     [
+      0.08,
+      1.6
+     ],
+     [
+      6.18,
+      7.6
+     ]
+    ],
+    "pk": -32,
+    "fadeIn": 0.05,
+    "fadeOut": 0.3,
+    "width": 0.5
+   }
+  ],
+  "murmur": [
+   {
+    "file": "public/sfx/bihar/amb_village_walla.mp3",
+    "from": 40.0,
+    "to": 43.5,
+    "pk": -36,
+    "fadeIn": 0.3,
+    "fadeOut": 0.6,
+    "width": 0.4
+   }
+  ],
+  "lid": [
+   {
+    "file": "public/sfx/bihar/glass_bottle_down.wav",
+    "from": 0.0,
+    "to": 0.7,
+    "lead": 0.01,
+    "pk": -31,
+    "fadeOut": 0.15
+   }
+  ],
+  "glass": [
+   {
+    "file": "public/sfx/bihar/glass_bottle_down.wav",
+    "from": 0.0,
+    "to": 0.7,
+    "lead": 0.01,
+    "pk": -28,
+    "fadeOut": 0.15
+   }
+  ],
+  "plastic": [
+   {
+    "file": "public/sfx/bihar/plastic_rip.wav",
+    "from": 0.04,
+    "to": 0.8,
+    "lead": 0.02,
+    "pk": -27,
+    "fadeOut": 0.1
+   }
+  ],
+  "creak": [
+   {
+    "file": "public/sfx/bihar/door_wood_creak.wav",
+    "from": 0.05,
+    "to": 1.3,
+    "lead": 0.02,
+    "pk": -32,
+    "fadeOut": 0.2
+   }
+  ],
+  "door.slide": [
+   {
+    "file": "public/sfx/bihar/door_wood_creak.wav",
+    "from": 2.85,
+    "to": 3.62,
+    "lead": 0.02,
+    "pk": -32,
+    "fadeOut": 0.2
+   }
+  ],
+  "door.brush": [
+   {
+    "file": "public/sfx/bihar/whoosh_cloth.wav",
+    "from": 1.6,
+    "to": 2.25,
+    "lead": 0.2,
+    "pk": -34,
+    "fadeOut": 0.15,
+    "width": 0.3
+   }
+  ],
+  "lift": [
+   {
+    "file": "public/sfx/bihar/whoosh_cloth.wav",
+    "from": 0.25,
+    "to": 0.95,
+    "lead": 0.2,
+    "pk": -33,
+    "fadeOut": 0.15,
+    "width": 0.3
+   }
+  ],
+  "whoosh": [
+   {
+    "file": "public/sfx/bihar/whoosh_cloth.wav",
+    "variants": [
+     [
+      0.25,
+      0.95
+     ],
+     [
+      1.6,
+      2.25
+     ]
+    ],
+    "lead": 0.25,
+    "pk": -28,
+    "fadeOut": 0.15,
+    "width": 0.3
+   }
+  ]
+ }
 }
