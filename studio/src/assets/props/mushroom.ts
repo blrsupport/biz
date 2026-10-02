@@ -12,8 +12,8 @@ export const MUSHROOM_PALETTE: Palette = {
   "bag.mould": "#7f8b79",
   "bag.rot": "#5b4835",
   "mush.rope": "#b59a6c",
-  oyster: "#ece4d2",
-  "oyster.gill": "#c9bca4",
+  oyster: "#e9d6a8",
+  "oyster.gill": "#c4a979",
   "spawn.glass": "#c4dcd8",
   "spawn.grain": "#c99f58",
   "spawn.myc": "#f8f6ef",
@@ -23,10 +23,41 @@ export const MUSHROOM_PALETTE: Palette = {
   "sack.white": "#ebe7dc",
   "sack.weave": "#cfc8b8",
   "sack.tie": "#b2925f",
+  "lamp.metal": "#8a3a2a",
+  "lamp.glass": "#dfe8e2",
+  "lamp.flame": "#ffcf6e",
+  "lamp.wire": "#3a3532",
+  "rack.frame": "#55635f",
+  "rack.shelf": "#9a8a70",
+  "mush.drum": "#8d969a",
+  "mush.drum.band": "#5d666b",
+  "mush.steam": "#f4f4f0",
+  "mush.tray": "#b9c0c2",
+  "mush.lota": "#c4933a",
+  "mush.water": "#cfe6ee",
 };
 
 const clamp01 = (v: number) => Math.max(0, Math.min(1, v));
 const flat = { form: "flat", ink: 0, paper: false } as const;
+
+/**
+ * One oyster cap seen from the side: a fan from a narrow stem at `base`, spreading `r` toward `dir` (radians, in the
+ * bag's own frame), its far edge wavy; `squash` flattens it top to bottom; `lift` keeps only the upper rim band.
+ */
+function fanPts(base: Pt, dir: number, r: number, squash: number, turn: number, lift = 0): Pt[] {
+  const pts: Pt[] = [];
+  const n = 12;
+  const side = Math.cos(dir) >= 0 ? 1 : -1;
+  const local = (p: Pt): Pt => add(base, rot(p, turn));
+  pts.push(local([-side * 0.02 * r, -0.06 * r]));
+  for (let i = 0; i <= n; i++) {
+    const a = dir - 0.8 + (1.6 * i) / n;
+    const rr = r * (1 + 0.06 * Math.sin(i * 2.1));
+    pts.push(local([rr * Math.cos(a), rr * Math.sin(a) * squash - lift * r]));
+  }
+  pts.push(local([-side * 0.02 * r, 0.06 * r]));
+  return side * squash >= 0 ? pts : pts.reverse();
+}
 
 // ---------------------------------------------------------------------------------------------------------------
 // Grow bag
@@ -153,21 +184,34 @@ export function growBag(id: string, o: GrowBagOpts): GrowBagOut {
   out.push(shape(`${id}/sheen2`, "bag.plastic", capsule(S(0.3, 0.3), S(0.33, 0.5), 1.6 * sc, 2 * sc, 3), { ...flat, tone: "light", opacity: 0.4 }));
   out.push(shape(`${id}/tie`, "mush.rope", capsule(S(-0.09, 0.06), S(0.09, 0.06), 3 * sc, 3 * sc, 3), { ...flat, ink: 0.5 }));
 
-  // oyster mushrooms: shelves of pale fan-shaped caps out of each hole, one cluster after another
+  // oyster mushrooms: cream, fan-shaped caps in overlapping shelves out of each hole, one cluster after another
   if (sprout > 0.01) {
     HOLES.forEach(([s, y], k) => {
       const g = clamp01((sprout - 0.1 * k) / 0.55);
       if (g < 0.03) return;
-      const base = s === 0 ? S(0.05, y) : S(s * 0.47, y);
-      const dir = s === 0 ? -1 : s;
-      for (let c = 0; c < 3; c++) {
-        const r = (0.17 - 0.035 * c) * o.u * sc * g;
-        const off = rot([dir * (0.06 + 0.07 * c) * o.u * sc * g, (-0.05 + 0.065 * c) * o.u * sc * g], sw);
-        const p = add(base, off);
-        const ang = sw + dir * (0.32 - 0.22 * c);
-        out.push(shape(`${id}/gill${k}_${c}`, "oyster.gill", ellipse(add(p, rot([0, 0.18 * r], ang)), r * 0.92, r * 0.42, ang, 3), { ...flat, opacity: Math.min(1, g * 3) }));
-        out.push(shape(`${id}/cap${k}_${c}`, "oyster", ellipse(p, r, r * 0.46, ang, 3), { depth: r * 0.6, opacity: Math.min(1, g * 3) }));
-      }
+      const base = s === 0 ? S(0.05, y) : S(s * 0.46, y);
+      const r0 = 0.21 * o.u * sc * g;
+      const op = Math.min(1, g * 3);
+      // [direction in the bag's frame, size, offset up/down]: the upper shelf behind, the lower in front
+      const fans: [number, number, number][] =
+        s === 0
+          ? [
+              [Math.PI + 0.35, 0.8, -0.06],
+              [-0.35, 0.8, -0.06],
+              [-Math.PI / 2, 0.55, -0.1],
+            ]
+          : [
+              [s > 0 ? -0.5 : Math.PI + 0.5, 0.72, -0.13],
+              [s > 0 ? -0.15 : Math.PI + 0.15, 1, 0],
+              [s > 0 ? 0.12 : Math.PI - 0.12, 0.66, 0.11],
+            ];
+      fans.forEach(([dir, size, dy], c) => {
+        const b = add(base, rot([0, dy * o.u * sc * g], sw));
+        const r = r0 * size;
+        out.push(shape(`${id}/gill${k}_${c}`, "oyster.gill", fanPts(add(b, rot([0, 0.12 * r], sw)), dir, r * 0.94, 0.42, sw), { ...flat, opacity: op }));
+        out.push(shape(`${id}/cap${k}_${c}`, "oyster", fanPts(b, dir, r, 0.4, sw), { depth: r * 0.45, ink: 0.6, opacity: op }));
+        out.push(shape(`${id}/rim${k}_${c}`, "oyster", fanPts(b, dir, r * 0.97, 0.12, sw, 0.18), { ...flat, tone: "light", opacity: 0.8 * op }));
+      });
     });
   }
   return { shapes: out, top: o.top, bottom: S(0, 1), mid: S(0, 0.5), grips: { L: S(-0.5, 0.36), R: S(0.5, 0.36) } };
@@ -188,6 +232,8 @@ export interface SpawnBottleOpts {
   /** white threads of the fungus through the grain, 0..1 (default 1) */
   myc?: number;
   scale?: number;
+  /** few shapes, for bottles by the dozen on a rack */
+  lite?: boolean;
 }
 
 export interface SpawnBottleOut {
@@ -236,6 +282,13 @@ export function spawnBottle(id: string, o: SpawnBottleOpts): SpawnBottleOut {
     3,
   );
   out.push(shape(`${id}/grain`, "spawn.grain", grain, { depth: w * 0.45 }));
+  if (o.lite) {
+    out.push(shape(`${id}/bad`, "spawn.bad", grain, { ...flat, opacity: 0.8 * bad }));
+    out.push(shape(`${id}/myc`, "spawn.myc", roundedPoly([{ p: B(-0.36, 0.14), r: 3 }, { p: B(0.36, 0.2), r: 3 }, { p: B(0.3, 0.55), r: 3 }, { p: B(-0.34, 0.5), r: 3 }], 3), { ...flat, opacity: 0.6 * myc }));
+    out.push(shape(`${id}/glint`, "spawn.glint", capsule(B(-0.32, 0.12), B(-0.32, 0.55), 1.6 * sc, 2 * sc, 2), { ...flat, opacity: 0.55 }));
+    out.push(shape(`${id}/plug`, "spawn.plug", ellipse(B(0, 1.0), 0.2 * w, 0.075 * h, tilt, 3), { ...flat, tone: "light" }));
+    return { shapes: out, top: B(0, 1.02), mid: B(0, 0.4), at: o.at, outline: glass };
+  }
   for (let i = 0; i < 16; i++) {
     const p = B(-0.36 + 0.72 * hash(i * 3.1 + 0.4), 0.08 + 0.56 * hash(i * 5.7 + 1.3));
     out.push(shape(`${id}/g${i}`, "spawn.grain", ellipse(p, 2.6 * sc, 1.8 * sc, i * 0.9 + tilt, 2), { ...flat, tone: i % 3 ? "light" : "shade", opacity: 0.85 }));
@@ -337,4 +390,121 @@ export function spawnSack(id: string, o: SpawnSackOpts): SpawnSackOut {
   out.push(shape(`${id}/earL`, "sack.white", ellipse(P(-0.49, -0.48), 0.05 * w, 0.035 * h, tilt - 0.6, 2), { ...flat, tone: "light" }));
   out.push(shape(`${id}/earR`, "sack.white", ellipse(P(0.49, -0.48), 0.05 * w, 0.035 * h, tilt + 0.6, 2), { ...flat, tone: "light" }));
   return { shapes: out, top: P(0, -0.5), bottom: P(0, 0.5), grips: { L: P(-0.5, -0.42), R: P(0.5, -0.42) } };
+}
+
+// ---------------------------------------------------------------------------------------------------------------
+// The things of the shed's nights and of the lab: a hurricane lamp, a rack of bottles, the steaming drum, a tray,
+// a lota of water
+// ---------------------------------------------------------------------------------------------------------------
+
+/** A hurricane lantern standing on its base: tank, glass globe, wire guards, cap and bail. `lit` 0..1. */
+export function hurricaneLamp(id: string, o: { at: Pt; u: number; lit: number }): { shapes: Shape[]; flame: Pt } {
+  const { u } = o;
+  const P = (x: number, y: number): Pt => [o.at[0] + x * u, o.at[1] - y * u];
+  const lit = clamp01(o.lit);
+  const out: Shape[] = [
+    shape(`${id}/bail`, "lamp.wire", capsule(P(-0.17, 0.66), P(0, 0.82), 1.6, 1.6, 2), { ...flat }),
+    shape(`${id}/bail2`, "lamp.wire", capsule(P(0, 0.82), P(0.17, 0.66), 1.6, 1.6, 2), { ...flat }),
+    shape(`${id}/tank`, "lamp.metal", roundedPoly([{ p: P(-0.2, 0), r: 4 }, { p: P(0.2, 0), r: 4 }, { p: P(0.22, 0.1), r: 6 }, { p: P(0.12, 0.17), r: 4 }, { p: P(-0.12, 0.17), r: 4 }, { p: P(-0.22, 0.1), r: 6 }], 3), { depth: 0.12 * u }),
+    shape(`${id}/globe`, "lamp.glass", ellipse(P(0, 0.36), 0.13 * u, 0.2 * u, 0, 4), { form: "flat", tone: "base", ink: 0.7, paper: false, opacity: 0.6 }),
+  ];
+  if (lit > 0.01) {
+    out.push(shape(`${id}/globe.lit`, "lamp.flame", ellipse(P(0, 0.36), 0.12 * u, 0.19 * u, 0, 4), { ...flat, opacity: 0.55 * lit }));
+    out.push(shape(`${id}/flame`, "lamp.flame", roundedPoly([{ p: P(0, 0.48), r: 1 }, { p: P(0.035, 0.37), r: 4 }, { p: P(0, 0.32), r: 3 }, { p: P(-0.035, 0.37), r: 4 }], 3), { ...flat, tone: "light", opacity: lit }));
+  }
+  out.push(shape(`${id}/wick`, "lamp.wire", roundRect(P(0, 0.31), 0.03 * u, 0.012 * u, 1), { ...flat }));
+  for (const [i, x] of [-0.15, 0.15].entries()) out.push(shape(`${id}/guard${i}`, "lamp.wire", capsule(P(x, 0.17), P(x * 0.9, 0.58), 1.6, 1.4, 2), { ...flat }));
+  out.push(shape(`${id}/cap`, "lamp.metal", [P(-0.12, 0.56), P(0.12, 0.56), P(0.07, 0.66), P(-0.07, 0.66)], { form: "plane", facing: [0, -1], ink: 0.6 }));
+  out.push(shape(`${id}/glint`, "spawn.glint", capsule(P(-0.08, 0.28), P(-0.08, 0.44), 1.6, 1.6, 2), { ...flat, opacity: 0.5 }));
+  return { shapes: out, flame: P(0, 0.4) };
+}
+
+export interface RackOut {
+  shapes: Shape[];
+  /** y of the top of each shelf, from the bottom one up */
+  shelfY: number[];
+  x0: number;
+  x1: number;
+}
+
+/**
+ * An iron rack of spawn bottles: two end frames, `shelves` planks, bottles standing on each.
+ * `filled(shelf, i)` says whether a place holds a bottle (default: all); `x` is its middle, `ground` the floor.
+ */
+export function bottleRack(id: string, o: { x: number; ground: number; u: number; w?: number; shelves?: number; per?: number; filled?: (shelf: number, i: number) => boolean; seed?: number }): RackOut {
+  const { u } = o;
+  const w = (o.w ?? 1.9) * u;
+  const n = o.shelves ?? 4;
+  const per = o.per ?? 6;
+  const top = o.ground - 4.3 * u;
+  const x0 = o.x - w / 2;
+  const x1 = o.x + w / 2;
+  const out: Shape[] = [];
+  const shelfY: number[] = [];
+  for (const [i, x] of [x0, x1].entries()) out.push(shape(`${id}/post${i}`, "rack.frame", [[x - 4, top], [x + 4, top], [x + 4, o.ground], [x - 4, o.ground]], { form: "plane", facing: [-1, 0], ink: 0.6 }));
+  for (let k = 0; k < n; k++) {
+    const y = o.ground - 0.35 * u - k * ((o.ground - 0.35 * u - top - 0.2 * u) / (n - 1));
+    shelfY.push(y);
+    out.push(shape(`${id}/shelf${k}`, "rack.shelf", [[x0 - 6, y], [x1 + 6, y], [x1 + 6, y + 0.07 * u], [x0 - 6, y + 0.07 * u]], { form: "plane", facing: [0, -1], ink: 0.6 }));
+    for (let i = 0; i < per; i++) {
+      if (o.filled && !o.filled(k, i)) continue;
+      const bx = x0 + ((i + 0.5) / per) * w;
+      const b = spawnBottle(`${id}/b${k}_${i}`, { at: [bx, y], u, scale: 0.78, lite: true, myc: 0.5 + 0.5 * hash((o.seed ?? 1) * 3.1 + k * 7 + i) });
+      out.push(...b.shapes);
+    }
+  }
+  out.push(shape(`${id}/brace`, "rack.frame", [[x0, o.ground - 0.12 * u], [x1, o.ground - 0.12 * u], [x1, o.ground - 0.08 * u], [x0, o.ground - 0.08 * u]], { ...flat, tone: "shade" }));
+  return { shapes: out, shelfY, x0, x1 };
+}
+
+/** The sterilising drum on its clay stove: `lid` 0..1 lifts and tips the lid; `steam` 0..1 how much steam; `phase` drives the puffs (pass time). */
+export function steamDrum(id: string, o: { at: Pt; u: number; lid: number; steam: number; phase: number }): { shapes: Shape[]; lidGrip: Pt; mouth: Pt } {
+  const { u } = o;
+  const P = (x: number, y: number): Pt => [o.at[0] + x * u, o.at[1] - y * u];
+  const out: Shape[] = [
+    shape(`${id}/stove`, "wall", roundedPoly([{ p: P(-0.62, 0), r: 6 }, { p: P(0.62, 0), r: 6 }, { p: P(0.56, 0.5), r: 4 }, { p: P(-0.56, 0.5), r: 4 }], 3), { form: "plane", facing: [0, 0], ink: 0.6 }),
+    shape(`${id}/mouth`, "mush.drum.band", roundRect(P(0, 0.2), 0.18 * u, 0.13 * u, 6), { ...flat, tone: "deep" }),
+    shape(`${id}/body`, "mush.drum", roundedPoly([{ p: P(-0.5, 0.5), r: 4 }, { p: P(0.5, 0.5), r: 4 }, { p: P(0.5, 1.75), r: 4 }, { p: P(-0.5, 1.75), r: 4 }], 3), { depth: 0.35 * u }),
+  ];
+  for (const [i, y] of [0.72, 1.5].entries()) out.push(shape(`${id}/band${i}`, "mush.drum.band", roundRect(P(0, y), 0.51 * u, 0.035 * u, 2), { ...flat }));
+  const lift = clamp01(o.lid);
+  const lc = P(-0.25 * lift, 1.8 + 0.5 * lift);
+  const tilt = -0.5 * lift;
+  out.push(shape(`${id}/lid`, "mush.drum", roundRect(lc, 0.54 * u, 0.06 * u, 6, tilt), { form: "plane", facing: [0, -1], ink: 0.6 }));
+  const knob = add(lc, rot([0, -0.1 * u], tilt));
+  out.push(shape(`${id}/knob`, "mush.drum.band", roundRect(knob, 0.08 * u, 0.04 * u, 3, tilt), { ...flat }));
+  const st = clamp01(o.steam);
+  if (st > 0.01) {
+    for (let i = 0; i < 6; i++) {
+      const k = (o.phase * 0.55 + i / 6) % 1;
+      const p = P(-0.3 + 0.6 * hash(i * 2.7) + 0.15 * Math.sin(o.phase + i), 1.85 + 1.6 * k);
+      const r = (0.12 + 0.22 * k) * u;
+      out.push(shape(`${id}/steam${i}`, "mush.steam", ellipse(p, r, r * 0.8, i, 4), { ...flat, opacity: st * 0.5 * Math.sin(Math.PI * k) }));
+    }
+  }
+  return { shapes: out, lidGrip: add(knob, [0.04 * u, -0.02 * u]), mouth: P(0, 1.8) };
+}
+
+/** A metal tray of four spawn bottles, carried level; `c` is the middle of its underside. */
+export function bottleTray(id: string, o: { c: Pt; u: number; tilt?: number }): Shape[] {
+  const { u } = o;
+  const tilt = o.tilt ?? 0;
+  const P = (x: number, y: number): Pt => add(o.c, rot([x * u, -y * u], tilt));
+  const out: Shape[] = [];
+  for (let i = 0; i < 4; i++) out.push(...spawnBottle(`${id}/b${i}`, { at: P(-0.36 + i * 0.24, 0.05), u, scale: 0.78, lite: true, tilt, myc: 0.2 }).shapes);
+  out.push(shape(`${id}/tray`, "mush.tray", [P(-0.52, 0.09), P(0.52, 0.09), P(0.48, 0), P(-0.48, 0)], { form: "plane", facing: [0, 0], ink: 0.6 }));
+  return out;
+}
+
+/** A brass lota (water pot); `at` is the middle of its base, `tilt` tips it to pour. Returns the lip it pours from. */
+export function lota(id: string, o: { at: Pt; u: number; tilt?: number }): { shapes: Shape[]; lip: Pt } {
+  const { u } = o;
+  const tilt = o.tilt ?? 0;
+  const P = (x: number, y: number): Pt => add(o.at, rot([x * u, -y * u], tilt));
+  const out: Shape[] = [
+    shape(`${id}/body`, "mush.lota", spline([P(-0.08, 0), P(0.08, 0), P(0.2, 0.12), P(0.16, 0.27), P(0.07, 0.33), P(-0.07, 0.33), P(-0.16, 0.27), P(-0.2, 0.12)], { closed: true, step: 4 }), { depth: 0.12 * u }),
+    shape(`${id}/neck`, "mush.lota", roundRect(P(0, 0.37), 0.065 * u, 0.04 * u, 2, tilt), { ...flat, tone: "shade" }),
+    shape(`${id}/rim`, "mush.lota", roundRect(P(0, 0.41), 0.1 * u, 0.02 * u, 2, tilt), { ...flat, tone: "light" }),
+  ];
+  return { shapes: out, lip: P(-0.1, 0.42) };
 }
