@@ -49,9 +49,9 @@ export const CRATE_TOP = GY - 0.1 * U - 1.0 * U - 0.8 * U - 0.1 * U;
 export const BOTTLE_DULL: Pt = [318, CRATE_TOP + 4];
 export const BOTTLE_GOOD: Pt = [398, CRATE_TOP + 4];
 export const TIN_AT = { x: 1120, base: CRATE_TOP + 6, u: U };
-export const CAL = { x: 1240, y: 360, w: 124, h: 186 };
+export const CAL = { x: 1150, y: 360, w: 124, h: 186 };
 /** where the dropped bag lies on the floor: its tie, and it lies along the floor to the left of it */
-const LIE: Pt = [930, GY - 0.12 * U - 0.29 * U];
+const LIE: Pt = [900, GY - 0.12 * U - 0.29 * U];
 
 // ---- the faces of this take (resting faces carry the inner brow ends a little high)
 const EASY: Expression = { lidU: 0.94, lidL: 0.88, browRaise: 0.3, browTilt: -0.4, smile: 0.2, open: 0, wide: 0.05, jaw: 0 };
@@ -73,10 +73,10 @@ export interface BagCue {
 function build() {
   const W = ANCHOR;
   const cues: Cue[] = [];
-  const sanjeev = new Actor({ ch: CAST.sanjeev, scale: U, groundY: GY, x: 790, yaw: 1.0, seed: 4 });
+  const sanjeev = new Actor({ ch: CAST.sanjeev, scale: U, groundY: GY, x: 945, yaw: 1.0, seed: 4 });
   sanjeev.face = new Blend<Expression>(FOCUS, mixFace);
   const sil = SET.junction + 1.0 * U;
-  const gossipA = new Actor({ ch: CAST.sonA, scale: U, groundY: sil, x: -330, yaw: 1.1, seed: 7 });
+  const gossipA = new Actor({ ch: CAST.sonA, scale: U, groundY: sil, x: -290, yaw: 1.1, seed: 7 });
   const gossipB = new Actor({ ch: CAST.porter, scale: 0.97 * U, groundY: sil + 8, x: -470, yaw: 1.1, seed: 9 });
   const cam = new Camera(585, 900, 1.04);
 
@@ -87,8 +87,8 @@ function build() {
   });
   const bag = (x: number, tier: number) => bags.find((b) => b.x === x && b.tier === tier)!;
   const fruiting = bag(700, 0);
-  const hung = bag(860, 0);
-  const dropped = bag(1020, 1);
+  const hung = bag(1020, 1);
+  const dropped = bag(860, 1);
 
   // ------------------------------------------------------------------------------------------------------------
   // The way in: a dark jamb close to the lens slides off to the left as the camera settles inside
@@ -106,19 +106,21 @@ function build() {
   hangSwing.to(0, { at: t0 + 0.9, dur: 0.8, w: WEIGHT.hand, windup: 0 });
   const hungGrip = (side: -1 | 1) => (t: number): Pt => {
     const sw = hangSwing.value(t);
-    const top: Pt = [hung.x, TIERS[0]];
+    const top: Pt = [hung.x, TIERS[1]];
     const g: Pt = [side * 0.27 * U, 0.42 * U];
     return [top[0] + g[0] * Math.cos(sw) - g[1] * Math.sin(sw), top[1] + g[0] * Math.sin(sw) + g[1] * Math.cos(sw)];
   };
   holdFromStart(sanjeev, "R", hungGrip(-1), { hand: HANDS.grip, palm: -1, layer: "front" });
   holdFromStart(sanjeev, "L", hungGrip(1), { hand: HANDS.grip, palm: 1, layer: "back" });
-  lookAt(sanjeev, [hung.x, TIERS[0] + 0.4 * U], { at: t0 + 0.1 });
+  // he is bent to the lower bag, so his head stays clear of the writing above him
+  crouch(sanjeev, 0.1, 0.3, { at: t0 - 0.1, dur: 0.3, w: WEIGHT.body });
+  lookAt(sanjeev, [hung.x, TIERS[1] + 0.4 * U], { at: t0 + 0.1 });
   cues.push({ t: t0 + 0.15, what: "rope", x: hung.x });
   release(sanjeev, "R", { at: t0 + 1.05, dur: 0.45 });
   release(sanjeev, "L", { at: t0 + 1.15, dur: 0.45 });
 
-  const aIn = gossipA.walkTo(150, { arrive: t0 + 0.95, pace: 1.7, step: 1.1 });
-  gossipB.walkTo(40, { arrive: t0 + 1.25, pace: 1.6, step: 1.0 });
+  const aIn = gossipA.walkTo(190, { arrive: t0 + 0.95, pace: 1.7, step: 1.1 });
+  gossipB.walkTo(90, { arrive: t0 + 1.25, pace: 1.6, step: 1.0 });
   gossipA.lean.to(0.1, { at: aIn.arrive + 0.4, dur: 0.45, w: WEIGHT.body });
   lookAt(gossipA, [800, 700], { at: aIn.arrive + 0.2 });
   lookAt(gossipB, [800, 720], { at: t0 + 1.6 });
@@ -129,7 +131,7 @@ function build() {
   // ------------------------------------------------------------------------------------------------------------
   const tEng = W("engineer");
   feel(gossipA, JEER, { at: tEng - 0.1, dur: 0.25 });
-  reach(gossipA, "R", [150 + 1.7 * U, 880], { at: tEng + 0.15, dur: 0.38, hand: HANDS.point, look: false, body: false });
+  reach(gossipA, "R", [190 + 1.5 * U, 880], { at: tEng + 0.15, dur: 0.38, hand: HANDS.point, look: false, body: false });
   const ht = gossipA.headTurn.value(tEng + 0.5);
   gossipA.headTurn.to(ht + 0.22, { at: tEng + 0.62, dur: 0.18, w: WEIGHT.head });
   gossipA.headTurn.to(ht - 0.22, { at: tEng + 0.84, dur: 0.2, w: WEIGHT.head });
@@ -137,12 +139,11 @@ function build() {
   gossipA.headTurn.to(ht, { at: tEng + 1.3, dur: 0.22, w: WEIGHT.head });
   feel(gossipB, JEER, { at: tEng + 0.2, dur: 0.25 });
   shrug(gossipB, { at: tEng + 0.45, hold: 0.08, amount: 0.6 });
-  shrug(gossipB, { at: tEng + 0.95, hold: 0.08, amount: 0.6 });
+  shrug(gossipB, { at: tEng + 1.2, hold: 0.08, amount: 0.6 });
   gossipB.lean.to(-0.08, { at: tEng + 0.5, dur: 0.3, w: WEIGHT.body });
   gossipB.lean.to(0.03, { at: tEng + 1.3, dur: 0.4, w: WEIGHT.body });
   // Sanjeev, his back to them, pats the bag below the one he hung
   feel(sanjeev, EASY, { at: tEng - 0.4, dur: 0.3 });
-  lookAt(sanjeev, [hung.x - 20, TIERS[1] + 0.5 * U], { at: tEng + 0.1 });
   const patEnd = pat(sanjeev, "R", [hung.x - 0.3 * U, TIERS[1] + 0.45 * U], { at: tEng + 0.5, times: 2, every: 0.3, palm: -1, layer: "front" });
   release(sanjeev, "R", { at: patEnd + 0.25, dur: 0.4 });
   // they lose interest and go
@@ -160,9 +161,14 @@ function build() {
   const tTight = W("tight");
   const lid = new Track(0);
   const lidAt = (t: number): Pt => tinPoints(TIN_AT, lid.value(t)).lidEdge;
-  const sw = sanjeev.walkTo(990, { start: tMoney - 0.5, pace: 2.1, step: 1.2 });
+  sanjeev.drop.to(0, { at: tMoney - 0.3, dur: 0.45, w: WEIGHT.body });
+  sanjeev.bend.to(0, { at: tMoney - 0.28, dur: 0.45, w: WEIGHT.body });
+  sanjeev.lean.to(0, { at: tMoney - 0.3, dur: 0.45, w: WEIGHT.body });
+  const sw = sanjeev.walkTo(1000, { start: tMoney - 0.5, pace: 2.1, step: 1.2 });
   lookAt(sanjeev, [TIN_AT.x, TIN_AT.base - 0.2 * U], { at: tMoney - 0.1 });
-  reach(sanjeev, "R", lidAt(0), { at: Math.max(sw.arrive + 0.05, tTight - 0.2), dur: 0.32, hand: HANDS.pinch, palm: -1, pin: lidAt, contact: true, layer: "front" });
+  const tLidAt = Math.max(sw.arrive + 0.1, tTight - 0.15);
+  sanjeev.bend.to(0.22, { at: tLidAt, dur: 0.36, w: WEIGHT.body });
+  reach(sanjeev, "R", lidAt(0), { at: tLidAt, dur: 0.32, hand: HANDS.pinch, palm: -1, pin: lidAt, contact: true, layer: "front", body: false });
   lid.to(1.9, { at: tTight + 0.2, dur: 0.32, w: WEIGHT.hand, windup: 0.04 });
   feel(sanjeev, SUNK, { at: tTight + 0.3, dur: 0.25 });
   cues.push({ t: tTight + 0.05, what: "lid", x: TIN_AT.x });
@@ -170,6 +176,7 @@ function build() {
   lid.to(0, { at: tShut, dur: 0.26, w: WEIGHT.hand, windup: 0 });
   cues.push({ t: tShut, what: "lid", x: TIN_AT.x });
   release(sanjeev, "R", { at: tShut + 0.22, dur: 0.4 });
+  sanjeev.bend.to(0, { at: tShut + 0.3, dur: 0.4, w: WEIGHT.body });
 
   // ------------------------------------------------------------------------------------------------------------
   // Beat 4. "People talk and for 6 long years, from 2002 to 2008, he struggles."
@@ -190,7 +197,7 @@ function build() {
     [bag(1180, 0), tSix + 0.3],
     [bag(1340, 1), t2002 + 0.1],
     [dropped, t2002 + 0.45],
-    [bag(860, 1), t2008 - 0.1],
+    [hung, t2008 - 0.1],
     [bag(1340, 0), t2008 + 0.25],
   ];
   for (const [b, at] of greys) b.failed.to(1, { at, dur: 0.6, w: WEIGHT.body, windup: 0, overshoot: 0 });
@@ -218,22 +225,23 @@ function build() {
   // Beat 5. "But during those years, he figures out the real problem." He crouches at it, splits it, feels the grain.
   // ------------------------------------------------------------------------------------------------------------
   const tBut = W("but", 2);
-  sanjeev.turnTo(-1.0, { at: tBut + 0.3, dur: 0.5 });
-  lookAt(sanjeev, [LIE[0] - 0.5 * U, LIE[1]], { at: tBut + 0.2 });
-  crouch(sanjeev, 0.34, 0.46, { at: tBut + 0.75, dur: 0.5, w: WEIGHT.body });
+  sanjeev.turnTo(-1.0, { at: tBut + 0.2, dur: 0.45 });
+  lookAt(sanjeev, [LIE[0] - 0.5 * U, LIE[1]], { at: tBut + 0.15 });
+  sanjeev.walkTo(875, { start: tBut + 0.45, pace: 1.6, step: 0.8 });
+  crouch(sanjeev, 1.0, 0.72, { at: tBut + 1.05, dur: 0.55, w: WEIGHT.body });
   feel(sanjeev, FOCUS, { at: tBut + 0.6, dur: 0.3 });
-  const tHands = tBut + 0.95;
+  const tHands = tBut + 1.15;
   const onBag = (dx: number, dy: number): Pt => [LIE[0] + dx * U, LIE[1] + dy * U];
-  reach(sanjeev, "L", onBag(-0.55, -0.12), { at: tHands, dur: 0.4, hand: HANDS.grip, palm: -1, contact: true, pin: true, layer: "front", look: false, body: false });
-  reach(sanjeev, "R", onBag(-0.85, -0.14), { at: tHands + 0.08, dur: 0.4, hand: HANDS.grip, contact: true, pin: true, layer: "back", look: false, body: false });
+  reach(sanjeev, "L", onBag(-0.5, -0.27), { at: tHands, dur: 0.4, hand: HANDS.grip, palm: -1, contact: true, pin: true, layer: "front", look: false, body: false });
+  reach(sanjeev, "R", onBag(-0.72, -0.27), { at: tHands + 0.08, dur: 0.4, hand: HANDS.grip, contact: true, pin: true, layer: "back", look: false, body: false });
   const split = new Track(0);
   const tTear = W("figures");
   split.to(1, { at: tTear + 0.2, dur: 0.36, w: WEIGHT.hand, windup: 0 });
-  reach(sanjeev, "L", onBag(-0.38, -0.12), { at: tTear + 0.2, dur: 0.36, hand: HANDS.grip, contact: true, pin: true, layer: "front", look: false, body: false });
-  reach(sanjeev, "R", onBag(-1.0, -0.12), { at: tTear + 0.22, dur: 0.36, hand: HANDS.grip, contact: true, pin: true, layer: "back", look: false, body: false });
+  reach(sanjeev, "L", onBag(-0.36, -0.27), { at: tTear + 0.2, dur: 0.36, hand: HANDS.grip, contact: true, pin: true, layer: "front", look: false, body: false });
+  reach(sanjeev, "R", onBag(-0.84, -0.27), { at: tTear + 0.22, dur: 0.36, hand: HANDS.grip, contact: true, pin: true, layer: "back", look: false, body: false });
   cues.push({ t: tTear + 0.05, what: "tear", x: LIE[0] - 0.6 * U });
   const tRub = W("real");
-  pat(sanjeev, "L", onBag(-0.62, -0.2), { at: tRub, times: 3, every: 0.17, palm: -1, layer: "front" });
+  pat(sanjeev, "L", onBag(-0.55, -0.3), { at: tRub, times: 3, every: 0.17, palm: -1, layer: "front" });
   feel(sanjeev, SUNK, { at: W("problem"), dur: 0.3 });
 
   // ------------------------------------------------------------------------------------------------------------
@@ -249,17 +257,19 @@ function build() {
   const tUp = tSee + 0.8;
   sanjeev.drop.to(0, { at: tUp, dur: 0.5, w: WEIGHT.body });
   sanjeev.bend.to(0, { at: tUp + 0.04, dur: 0.5, w: WEIGHT.body });
+  sanjeev.lean.to(0, { at: tUp, dur: 0.5, w: WEIGHT.body });
   const walkB = sanjeev.walkTo(520, { start: tUp + 0.2, pace: 2.0, step: 1.25 });
   lookAt(sanjeev, [BOTTLE_GOOD[0], BOTTLE_GOOD[1] - 0.3 * U], { at: walkB.arrive - 0.35 });
   feel(sanjeev, FOCUS, { at: walkB.arrive - 0.2, dur: 0.3 });
   const tSeed = W("seed", 2);
-  const tGrab = Math.min(tSeed - 0.25, walkB.arrive + 0.35);
-  const grabAt: Pt = [BOTTLE_GOOD[0], BOTTLE_GOOD[1] - 0.24 * U];
+  const tGrab = Math.min(tSeed - 0.5, walkB.arrive + 0.35);
+  const grabAt: Pt = [BOTTLE_GOOD[0], BOTTLE_GOOD[1] - 0.3 * U];
   reach(sanjeev, "R", grabAt, { at: tGrab, dur: 0.4, hand: HANDS.grip, palm: 1, contact: true, look: false, layer: "back" });
   cues.push({ t: tGrab, what: "glass", x: BOTTLE_GOOD[0] });
-  const RAISE: Pt = [372, 612];
+  // forward and up, ahead of his face at mouth height, so the arm reads in front of the chest
+  const RAISE: Pt = [345, 705];
   const tRaise = tSeed + 0.12;
-  reach(sanjeev, "R", RAISE, { at: tRaise, dur: 0.5, hand: HANDS.grip, palm: 1, pin: true, look: false, bow: 0.22, body: false, layer: "back" });
+  reach(sanjeev, "R", RAISE, { at: tRaise, dur: 0.45, hand: HANDS.grip, palm: 1, pin: true, look: false, bow: 0.22, body: false, layer: "back" });
   lookAt(sanjeev, [RAISE[0], RAISE[1] - 0.25 * U], { at: tRaise - 0.05 });
   feel(sanjeev, WONDER, { at: tRaise + 0.25, dur: 0.35 });
   handsOnHips(sanjeev, { at: tRaise + 0.45, dur: 0.45, sides: ["L"] });
@@ -276,26 +286,27 @@ function build() {
   // The light: the doorlight dims to dusk and back with each page of the calendar; and dusk deepens over the take
   // ------------------------------------------------------------------------------------------------------------
   const dusk = (t: number): number => {
-    const base = 0.1 * Math.max(0, Math.min(1, (t - t0) / (SHED.end - t0)));
+    const base = 0.08 * Math.max(0, Math.min(1, (t - t0) / (SHED.end - t0)));
     if (t <= flipFrom || t >= flipTo) return base;
     const k = (t - flipFrom) / (flipTo - flipFrom);
-    return base + 0.26 * (0.5 - 0.5 * Math.cos(k * 6 * 2 * Math.PI));
+    return base + 0.16 * (0.5 - 0.5 * Math.cos(k * 6 * 2 * Math.PI));
   };
 
   // ------------------------------------------------------------------------------------------------------------
   // Camera: never still
   // ------------------------------------------------------------------------------------------------------------
   cam.keys([
-    { t: t0 - 0.3, cx: 600, cy: 900, zoom: 1.07 },
-    { t: t0 + 0.2, cx: 585, cy: 900, zoom: 1.04 },
-    { t: t0 + 1.0, cx: 545, cy: 902, zoom: 1.0 },
-    { t: W("mushrooms") + 0.1, cx: 560, cy: 904, zoom: 1.01 },
+    { t: t0 - 0.3, cx: 660, cy: 900, zoom: 1.08 },
+    { t: t0 + 0.2, cx: 640, cy: 900, zoom: 1.04 },
+    { t: t0 + 1.0, cx: 600, cy: 902, zoom: 1.0 },
+    { t: W("mushrooms") + 0.1, cx: 604, cy: 904, zoom: 1.005 },
+    { t: tMoney, cx: 610, cy: 905, zoom: 1.01 },
     // in on the tin
     { t: tTight + 0.1, cx: 1010, cy: 1060, zoom: 1.28 },
     { t: W("people", 2) + 0.1, cx: 1015, cy: 1058, zoom: 1.3 },
     // back: the wall, the calendar, the bags
-    { t: tSix + 0.3, cx: 830, cy: 900, zoom: 0.98 },
-    { t: tPull + 0.3, cx: 840, cy: 905, zoom: 0.99 },
+    { t: tSix + 0.3, cx: 700, cy: 900, zoom: 0.98 },
+    { t: tBut + 0.1, cx: 716, cy: 905, zoom: 0.99 },
     // in on his hands at the bag
     { t: tTear, cx: 800, cy: 1130, zoom: 1.28 },
     { t: W("problem") + 0.2, cx: 795, cy: 1135, zoom: 1.31 },
@@ -311,28 +322,28 @@ function build() {
   // ------------------------------------------------------------------------------------------------------------
   const type = {
     engineer: {
-      x: 110,
-      y: 322,
-      size: 86,
-      maxW: 600,
+      x: 160,
+      y: 330,
+      size: 132,
+      maxW: 700,
       lines: [
         { text: "AN ENGINEER", at: W("an", 2) },
         { text: "GROWING", at: W("growing", 2) },
         { lead: "MUSHROOMS?", text: "", at: W("mushrooms") },
       ],
-      out: tMoney + 0.1,
+      out: W("mushrooms") + 0.45,
     } as PhraseCue,
     years: {
-      x: 370,
+      x: 260,
       y: 330,
-      cap: 124,
-      maxW: 560,
+      cap: 134,
+      maxW: 740,
       label: { text: "6 LONG YEARS", at: tSix },
       parts: [
         { text: "2002", at: t2002 },
         { text: "–2008", at: t2008 },
       ],
-      out: tBut + 0.2,
+      out: tBut,
     } as NumberCue,
     spawn: { x: 118, y: 470, size: 170, maxW: 520, lines: [{ lead: "SPAWN", text: "", at: W("spawn") }], out: SHED.end - 0.1 } as PhraseCue,
   };

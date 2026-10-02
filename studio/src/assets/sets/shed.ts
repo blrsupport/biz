@@ -29,8 +29,8 @@ const SHARED: Palette = {
 /** The shed: mud plaster, a darker dung-plastered plinth, a beaten-earth floor. Cool shade, warm doorlight. */
 export const SHED_PALETTE: Palette = {
   ...SHARED,
-  wall: "#d4bb96",
-  "wall.sun": "#f4d8a8",
+  wall: "#ddc7a3",
+  "wall.sun": "#f6dcae",
   dado: "#7a5e44",
   "dado.sun": "#c39667",
   trim: "#5a4533",

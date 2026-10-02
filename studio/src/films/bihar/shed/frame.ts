@@ -46,7 +46,9 @@ const BACK_BAGS: Shape[] = [
   ...BACK_ROPES.map((x, i) => shedRope(`back/rope${i}`, x, SET.poleY - 0.1 * U, TIERS[1] + 0.2 * U)),
   ...BACK_ROPES.flatMap((x, i) => [0, 1].flatMap((k) => growBag(`back/bag${i}_${k}`, { top: [x, TIERS[k] - 0.1 * U], u: U, scale: 0.86, seed: 20 + i * 2 + k, myc: 0.5 + 0.3 * hash(i + k) }).shapes)),
 ];
-const DULL = spawnBottle("bottle.dull", { at: BOTTLE_DULL, u: U, bad: 1 }).shapes;
+/** the bottles are drawn a size up from the library default, so the one he holds up reads on a phone */
+const BOTTLE_SCALE = 1.35;
+const DULL = spawnBottle("bottle.dull", { at: BOTTLE_DULL, u: U, bad: 1, scale: BOTTLE_SCALE }).shapes;
 
 const big = (shapes: readonly Shape[], min = 420) => shapes.filter((s) => Math.abs(area(s.pts)) > min);
 
@@ -72,14 +74,13 @@ export function shedFrame(t: number, lookId: LookId = "A"): FrameList {
   }
   const da = tk.droppedAt(t);
   const droppedShapes = growBag(tk.dropped.id, { top: da.top, u: U, failed: tk.dropped.failed.value(t), swing: da.swing, split: tk.split.value(t), seed: tk.dropped.seed }).shapes;
-  const lying = t >= m.tLand - 0.05;
 
   // ---- the bottle: on the crate, then in his far hand
   const kGrab = Math.max(0, Math.min(1, (t - (m.tGrab - 0.1)) / 0.14));
   const hold = sf.hands.R.hold;
-  const inHand: Pt = [hold[0], hold[1] + 0.2 * U];
+  const inHand: Pt = [hold[0], hold[1] + 0.26 * U];
   const at: Pt = kGrab <= 0 ? BOTTLE_GOOD : kGrab >= 1 ? inHand : [BOTTLE_GOOD[0] + (inHand[0] - BOTTLE_GOOD[0]) * kGrab, BOTTLE_GOOD[1] + (inHand[1] - BOTTLE_GOOD[1]) * kGrab];
-  const bottle = spawnBottle("bottle", { at, u: U, tilt: tk.tilt.value(t) });
+  const bottle = spawnBottle("bottle", { at, u: U, tilt: tk.tilt.value(t), scale: BOTTLE_SCALE });
 
   // ---- tin and calendar
   const tin = buildTin("tin", { ...TIN_AT, lid: tk.lid.value(t), notes: true });
@@ -116,22 +117,27 @@ export function shedFrame(t: number, lookId: LookId = "A"): FrameList {
         ...wallShadow,
         paint("cal.back", WALL_DEPTH, cal.back),
         paint("cal.page", WALL_DEPTH, cal.page),
-        written("type.engineer", WALL_DEPTH, { kind: "phrase", ...ty.engineer }, OVER),
-        written("type.years", WALL_DEPTH, { kind: "number", ...ty.years }, OVER),
-        written("type.spawn", WALL_DEPTH, { kind: "phrase", ...ty.spawn }, OVER),
       ],
     }),
     ...shedFloor(SET, { id: "floor", space: 0, casters, groundY: GY + 4 }),
     paint("door", 0, [...SET.doorSolid, ...SET.doorView]),
   ];
   if (ga && gb) {
-    items.push(group("gossips", 0, [paint("gossips.fig", 0, [...gb.shapes, ...ga.shapes])], { clip: [SET.opening] }));
+    // they stand in the doorway: hidden by the near part of the left wall and under the lintel, not by the back jamb
+    const [o0, o1, o2, o3] = SET.opening;
+    const k = (o3[1] - o2[1]) / (o3[0] - o2[0]);
+    const door: Pt[] = [[o0[0] + 1500, o0[1] + 600], o1, o2, [o3[0] + 1500, o3[1] + 1500 * k]];
+    items.push(group("gossips", 0, [paint("gossips.fig", 0, [...gb.shapes, ...ga.shapes])], { clip: [door] }));
   }
   items.push(
     paint("door.frame", 0, SET.doorFrame),
+    // the writing goes over the back wall and on over the top of the left wall, so it is listed after the doorway
+    written("type.engineer", WALL_DEPTH, { kind: "phrase", ...ty.engineer }, OVER),
+    written("type.years", WALL_DEPTH, { kind: "number", ...ty.years }, OVER),
+    written("type.spawn", WALL_DEPTH, { kind: "phrase", ...ty.spawn }, OVER),
     paint("rack", 0, [...SET.rack, ...ROPE_SHAPES, ...bagShapes]),
     paint("contacts", 0, [...STATIC_CONTACTS, ...footContacts("sanjeev", tk.sanjeev, ss)]),
-    paint("props", 0, [...CRATES_LEFT, ...CRATES_RIGHT, ...tin.shapes, ...DULL, ...(lying ? droppedShapes : [])]),
+    paint("props", 0, [...CRATES_LEFT, ...CRATES_RIGHT, ...tin.shapes, ...DULL, ...droppedShapes]),
   );
   // the bottle catches the doorlight once he holds it up
   const g = tk.glow.value(t);
@@ -140,7 +146,7 @@ export function shedFrame(t: number, lookId: LookId = "A"): FrameList {
     items.push(fill("bottle.glow", 0, { kind: "radial", cx: c[0], cy: c[1], r: 1.1 * U, stops: fade(P["lamp.glow"], 0.42 * g, 0) }, [rect(c[0] - 1.1 * U, c[1] - 1.1 * U, 2.2 * U, 2.2 * U)]));
   }
   items.push(
-    paint("actor", 0, [...(lying ? [] : droppedShapes), ...sf.layers.behind, ...sf.layers.body, ...bottle.shapes, ...sf.layers.front]),
+    paint("actor", 0, [...sf.layers.behind, ...sf.layers.body, ...bottle.shapes, ...sf.layers.front]),
     paint("dust", 0, specks),
     ...shedTop(SET, { id: "top", space: WALL_DEPTH }),
   );

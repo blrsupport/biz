@@ -25,6 +25,8 @@ Read this and board.md at the start of every session. Update it after every sequ
 |---|---|---|---|---|---|---|
 | s1 | 0.00 - 12.38 | PASSED (2 Oct, phase 1) | s1_p1 (0.5, 2.8, 5.3, 7.6) | | | beats 1-2 built; beat 3 (lens pass to home) is phase 2 |
 
+| shed | 34.70 - 52.79 | FAILED (5) after 543 frames: (phase 1) | out/boards/shed_p1.png (35.2, 36.8, 41.7, 51.9) | | | phase 1: style frame 51.9 built, beats 1-5 rough; type moved over the left wall after the sheet |
+
 ## Decisions taken
 - Two worlds: village (new set, worker A: s1, home, today) and shed/lab (library room re-dressed, worker B: shed, seed, lab).
 - Spellings from the user: BIT Sindri, Sanjeev Kumar, Solan, Himachal, SABRI Spawn Lab. In film.ts facts.
@@ -33,6 +35,8 @@ Read this and board.md at the start of every session. Update it after every sequ
 ## The stage (so the next session need not read the take to find it)
 
 Where each set piece, prop and actor's mark stands, where the light comes from, and which later beat depends on which position.
+
+**shed / seed / lab (shed worker).** Set `src/assets/sets/shed.ts` (room.ts re-dressed), U 172, GY 1500. Back corner x 330; the doorway is in the left wall (opening x -63..282 at the floor, top y 546-671); light `LIGHT_SHED` from the door at frame left (lab: `LIGHT_LAB`, same door, plus a window in the back wall). Thatch underside above y ~224. Bamboo pole y 650 on posts x 590 / 1530; ropes x 700, 860, 1020, 1180, 1340, bag tops y 684 (upper) and 908 (lower); a fainter row at x 780..1420 on the wall (depth 0.09). Crates by the door x 358 with two spawn bottles on top (dull x 318, good x 398, base y ~1156): this is the bench for `seed`. Crates at right x 1130 with the cash tin (x 1120); calendar on the wall x 1150, y 360. The fruiting bag is x 700 upper; the dropped bag lies on the floor, tie at [900, 1429], body to its left, split open. At 52.79 Sanjeev stands at x 520 facing left (yaw -1), far hand R up at ~[345, 705] holding the good bottle; camera at about cx 492, cy 900, zoom 1.18 and still pushing in toward the left crates.
 
 ### Village (s1; home and today will reuse it)
 - Set `src/assets/sets/village.ts` (pieces placed per sequence, sized by `u`), props `src/assets/props/village.ts`. Lights `VILLAGE_LIGHTS` (morning left, afternoon right, sunrise left).
@@ -43,6 +47,8 @@ Where each set piece, prop and actor's mark stands, where the light comes from, 
 ## Files this film owns outside its folder
 
 Library files made or changed for this film (under src/assets), and whether another film uses them.
+- `src/assets/props/mushroom.ts` (new, shed worker): `growBag`, `spawnBottle`, `spawnSack`, `MUSHROOM_PALETTE`. Used by shed/seed/lab and imported by the village worker.
+- `src/assets/sets/shed.ts` (new, shed worker): `buildShed`, `shedBack`, `shedFloor`, `shedTop`, `shedJamb`, `shedRope`, `SHED_PALETTE`, `LAB_PALETTE`, `LIGHT_SHED`, `LIGHT_LAB`. Reuses `buildRoom` from room.ts.
 
 ## Which outputs are current
 
