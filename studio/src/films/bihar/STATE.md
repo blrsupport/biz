@@ -16,8 +16,8 @@ Read this and board.md at the start of every session. Update it after every sequ
 | Cast sheet and one style frame per world | cast out/stills/cast_bihar.png; style frame out/stills/style_spawn2.png (shed 52.3 s); village sheet out/boards/s1_p1.png |
 | Stop A: the user approves board, cast and style frames | APPROVED 2 Oct ("yes go ahead"). Phase 2 started. Fix list for the shed worker: bottle held at arm's length into the doorlight (not at his eye), oyster mushrooms as cream fans not white puffs, the split bag on the floor reads oddly, plus its 3 dry-run fails |
 | Sequences | see the table below |
-| Assembly, audit, finishing pass | |
-| Sound | |
+| Assembly, audit, finishing pass | whole-film dry run PASSED (3313 frames, 6 seqs); half render out/video/bihar_half.mp4; rough cut with full mix out/video/bihar_rough_sound.mp4 sent; audit: held-in-move 0.4 %, near-still 47 % (longest 10.97 s), 0 cuts |
+| Sound | sound.json written; mix PASSES (-14.1 LUFS, TP -1.6, voice over music/effects ok; music dipped at 34.4, 71, 91.6, 106.4). Silent on purpose: birds, glint, lamp, water, steam, hen, horn.far (no sound fetched for them) |
 | Delivered (Stop B) | |
 
 ## Sequences
@@ -66,6 +66,8 @@ The render, the dry run output and the review pack that describe the film as it 
 ## Departures from the board (tell the user)
 
 ## Known weak spots (tell the user before they find them)
+- home and today in simplest form: father, trunk, degree, Solan walk, grow bags, porters, trader not built. lab in simplest form. seed and lab never looked at before the render.
+- About half the film is near-still (audit 47 %).
 
 ## Fetched from outside (every download, with its source; for a music track its recording id as well, since signed links expire)
 - `public/audio/bihar/music_suhana_110400.wav`: Epidemic Sound, "Suhana, Aashray Harishankar (edit 110.4 s, recording 4b9e201f-f862-4758-abaf-ccd5a15cc92e)"; preview https://audiocdn.epidemicsound.com/lqmp3/01KTGN2TRQKHA2B5C87WFG6W4M.mp3
