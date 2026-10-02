@@ -1,28 +1,44 @@
-// Bihar Mushroom: sequence "home". Everything that is drawn at time t, as a display list, back to front.
-// The generic view paints this list and the dry run checks it, so what is checked is what is drawn.
-import { paint, rect, shadow, type FrameList, type Item } from "../../../engine/draw/list.ts";
-import { shape, type Shape } from "../../../engine/draw/shape.ts";
+// Bihar Mushroom: sequence "home". Everything drawn at time t, back to front.
+import { CAST } from "../../../assets/cast/cast.ts";
+import { fill, paint, rect, shadow, type as written, type FrameList, type Item } from "../../../engine/draw/list.ts";
 import { buildFigure } from "../../../engine/figure/body.ts";
+import { smoothstep } from "../../../engine/geom/vec.ts";
 import { LOOKS, type LookId } from "../../../engine/look/looks.ts";
-import { HOME, WALL_DEPTH, homeTake } from "./take.ts";
+import { passItems } from "../s1/frame.ts";
+import { DEPTH, SKY_OVER, footContacts, laneGround, laneMiddle, laneNear, laneSky } from "../s1/lane.ts";
+import { BIG_SHED, HOME, HOME_PALETTE, homeTake } from "./take.ts";
 
-const { U, GY } = HOME;
-const JUNCTION = GY - 0.36 * U;
-const flat = { form: "flat", ink: 0, paper: false } as const;
-// static geometry is built once, not every frame
-const WALL: Shape[] = [shape("stage/wall", "stage.wall", rect(-700, -500, 2480, JUNCTION + 700), flat)];
-const FLOOR: Shape[] = [shape("stage/floor", "stage.floor", rect(-700, JUNCTION, 2480, 1400), flat)];
+/** the parts of the shed in front of a man in its doorway: the wall right of the door, the lintel, the wall above */
+const AFTER = /wallR|plinthR|wallT|lintel|poleR/;
+const SHED_BEHIND = [...BIG_SHED.dark, ...BIG_SHED.front.filter((s) => !AFTER.test(s.id))];
+const SHED_FRONT = BIG_SHED.front.filter((s) => AFTER.test(s.id));
 
 export function homeFrame(t: number, lookId: LookId = "A"): FrameList {
   const tk = homeTake();
   const view = tk.cam.view(t);
-  const fig = buildFigure(tk.who.ch, tk.who.solve(t).pose, LOOKS[lookId].people);
+  const s = tk.sanjeev.solve(t);
+  const f = buildFigure(CAST.sanjeev, s.pose, LOOKS[lookId].people);
+  const veil = smoothstep(tk.marks.tVeil0, tk.marks.tVeil1, t);
+  const d = tk.door;
+  const ty = tk.type;
+  const OVER = SKY_OVER.afternoon;
   const items: Item[] = [
-    paint("wall", WALL_DEPTH, WALL),
-    paint("floor", 0, FLOOR),
-    // a cast shadow is the floor itself, unlit, laid down away from the light
-    shadow("cast", 0, fig.shapes, "stage.floor", { ground: { y: GY, stretch: 0.4, drop: 0.26 } }),
-    paint("actor", 0, fig.shapes),
+    ...laneSky("afternoon", []),
+    written("type.name", DEPTH.type, { kind: "phrase", ...ty.name }, OVER),
+    written("type.bit", DEPTH.type, { kind: "phrase", ...ty.bit }, OVER),
+    written("type.nalanda", DEPTH.type, { kind: "phrase", ...ty.nalanda }, OVER),
+    written("type.year", DEPTH.type, { kind: "phrase", ...ty.year }, OVER),
+    written("type.solan", DEPTH.type, { kind: "phrase", ...ty.solan }, OVER),
+    ...laneMiddle(t, "afternoon"),
+    ...laneGround("afternoon"),
+    paint("shed.behind", 0, SHED_BEHIND),
+    shadow("ground.cast", 0, f.shapes, "vil.lane", { ground: { y: HOME.GY, stretch: 0.4, drop: 0.26 } }),
+    paint("contacts", 0, footContacts("sanjeev", tk.sanjeev, s)),
+    paint("actors", 0, f.shapes),
+    ...(veil > 0.01 ? [fill("veil", 0, { kind: "solid", color: HOME_PALETTE["vil.dark"] }, [rect(d.x0, d.y0, d.x1 - d.x0, d.y1 - d.y0 + 4)], { opacity: veil })] : []),
+    paint("shed.front", 0, SHED_FRONT),
+    ...laneNear(),
+    ...passItems(t),
   ];
-  return { t, view, items, figures: [{ name: "who", actor: tk.who, fig }] };
+  return { t, view, items, figures: [{ name: "sanjeev", actor: tk.sanjeev, fig: f }] };
 }

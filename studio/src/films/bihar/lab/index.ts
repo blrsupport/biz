@@ -1,5 +1,5 @@
 // Bihar Mushroom: sequence "lab" as the film sees it.
-import { LIGHT_MORNING } from "../../../assets/lights.ts";
+import { LIGHT_LAB } from "../../../assets/sets/shed.ts";
 import type { Sequence } from "../../../engine/film.ts";
 import { labFrame } from "./frame.ts";
 import { LAB, LAB_PALETTE, labTake } from "./take.ts";
@@ -8,19 +8,26 @@ const tk = labTake();
 
 export const LAB_SEQ: Sequence = {
   id: "lab",
-  // Drawn from t0; covers the frame from tFull. With tFull equal to t0 this sequence cuts in. For a planned hand-over
-  // (a glow that rises, a thing that sweeps across) make tFull later and list, until then, only what shows over the
-  // sequence before it (docs/perform.md, "The sequence, and joining two of them").
+  // In from `seed` by Pass: it opens on the same sack close to the lens, covering the frame, which lifts away.
+  // Out to `today` by Pass: the dark jamb covers the frame by `end`.
   t0: LAB.t0,
   tFull: LAB.t0,
   end: LAB.end,
   palette: LAB_PALETTE,
-  lights: { key: LIGHT_MORNING },
-  light: "key",
-  background: LAB_PALETTE["stage.wall"],
+  lights: { door: LIGHT_LAB },
+  light: "door",
+  background: LAB_PALETTE["shed.air.dark"],
   frame: labFrame,
   cues: tk.cues,
   marks: tk.marks,
-  walkers: [{ name: "who", actor: tk.who }],
-  allow: [],
+  walkers: [
+    { name: "sanjeev", actor: tk.sanjeev },
+    { name: "f1", actor: tk.f1 },
+    { name: "f2", actor: tk.f2 },
+  ],
+  allow: [
+    { id: /^drum\/steam/, why: "steam puffs rise from the drum and thin out to nothing" },
+    { id: /^near\//, why: "the sack close to the lens lifts up out of the frame" },
+    { id: /^jamb\//, why: "the door jamb close to the lens slides in across the frame" },
+  ],
 };

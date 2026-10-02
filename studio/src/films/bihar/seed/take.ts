@@ -85,7 +85,7 @@ function build() {
   // ------------------------------------------------------------------------------------------------------------
   const tSeed = W("seed", 3);
   const tBad = W("bad");
-  crouch(sanjeev, 0.1, 0.36, { at: tSeed - 0.05, dur: 0.4 });
+  crouch(sanjeev, 0.24, 0.52, { at: tSeed - 0.05, dur: 0.4 });
   const dullGrip: Pt = [BOTTLE_DULL[0], BOTTLE_DULL[1] - 0.3 * U];
   reach(sanjeev, "L", dullGrip, { at: tSeed, dur: 0.36, hand: HANDS.grip, palm: -1, contact: true, layer: "front", body: false });
   const SHOW: Pt = [418, 1010];
@@ -228,10 +228,10 @@ function build() {
   const type = {
     fails: {
       x: 190,
-      y: 312,
+      y: 302,
       size: 140,
       maxW: 700,
-      leading: 1.25,
+      leading: 1.15,
       lines: [
         { text: "THE WHOLE", at: W("whole") },
         { text: "CROP", at: W("crop") },
@@ -241,7 +241,7 @@ function build() {
     } as PhraseCue,
     from: {
       x: 340,
-      y: 326,
+      y: 350,
       size: 130,
       maxW: 470,
       leading: 1.2,

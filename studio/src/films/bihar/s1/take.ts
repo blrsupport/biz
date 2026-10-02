@@ -257,19 +257,19 @@ function build() {
   const tGrabB = Math.max(fs.arrive + 0.28, tSwing - 0.5);
   farmer.drop.to(0.74, { at: tGrabB - 0.02, dur: 0.3, w: WEIGHT.body, windup: 0 });
   farmer.bend.to(-0.45, { at: tGrabB, dur: 0.3, w: WEIGHT.body, windup: 0 });
-  reach(farmer, "L", onSackB([-0.08, -0.44])(tGrabB), { at: tGrabB, dur: 0.28, hand: HANDS.grip, look: false, body: false, contact: true, pin: onSackB([-0.08, -0.44]), layer: "front" });
+  reach(farmer, "L", onSackB([0.02, -0.34])(tGrabB), { at: tGrabB, dur: 0.28, hand: HANDS.grip, look: false, body: false, contact: true, layer: "front" });
   reach(farmer, "R", onSackB([0.3, -0.46])(tGrabB + 0.03), { at: tGrabB + 0.03, dur: 0.28, hand: HANDS.grip, look: false, body: false, contact: true, pin: onSackB([0.3, -0.46]), layer: "back" });
   feel(farmer, STRAIN, { at: tGrabB + 0.05, dur: 0.14 });
   cues.push({ t: tGrabB + 0.08, what: "heave", x: 330 });
   // up and round: the sack comes off the ground, he rises with it and lets it fly at us
   const tLiftB = tGrabB + 0.06;
+  release(farmer, "L", { at: tLiftB + 0.12, dur: 0.25 });
   const HIGH: Pt = [300, GY - 2.5 * U];
   const pathB = new Path2(REST_B);
   pathB.to(HIGH, { at: tSwing, dur: tSwing - tLiftB, w: WEIGHT.heavy, windup: 0, overshoot: 0, bow: 0 });
   farmer.drop.to(0.3, { at: tSwing - 0.02, dur: tSwing - tLiftB, w: WEIGHT.heavy, windup: 0 });
   farmer.bend.to(0.1, { at: tSwing, dur: tSwing - tLiftB, w: WEIGHT.heavy, windup: 0 });
   const tRel = tSwing + 0.08;
-  release(farmer, "L", { at: tRel + 0.04, dur: 0.3 });
   release(farmer, "R", { at: tRel + 0.06, dur: 0.3 });
   farmer.turnTo(-0.45, { at: tRel + 0.3, dur: 0.35 });
   feel(farmer, PROUD, { at: tRel + 0.4, dur: 0.3 });

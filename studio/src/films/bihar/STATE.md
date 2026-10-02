@@ -26,7 +26,9 @@ Read this and board.md at the start of every session. Update it after every sequ
 |---|---|---|---|---|---|---|
 | s1 | 0.00 - 12.38 | PASSED (2 Oct, phase 1) | s1_p1 (0.5, 2.8, 5.3, 7.6) | | | beats 1-2 built; beat 3 (lens pass to home) is phase 2 |
 
-| shed | 34.70 - 52.79 | FAILED (5) after 543 frames: (phase 1) | out/boards/shed_p1.png (35.2, 36.8, 41.7, 51.9) | | | phase 1: style frame 51.9 built, beats 1-5 rough; type moved over the left wall after the sheet |
+| shed | 34.70 - 52.79 | PASSED (2 Oct, phase 2) | out/boards/shed_p1.png (phase 1 only) | | | built; style-frame notes applied (bottle at arm's length, cream oyster fans, no split) but not looked at again |
+| seed | 52.79 - 64.91 | PASSED (2 Oct) | none (budget) | | | built from board, unseen; watering with lota; three sacks, third covers lens |
+| lab | 64.91 - 88.47 | PASSED (2 Oct) | none (budget) | | | simplest form: reveal, racks/drum, farmers at door, type; no rack push, tray, teaching or bag-carrying; ends on jamb |
 
 ## Decisions taken
 - Two worlds: village (new set, worker A: s1, home, today) and shed/lab (library room re-dressed, worker B: shed, seed, lab).
@@ -37,7 +39,9 @@ Read this and board.md at the start of every session. Update it after every sequ
 
 Where each set piece, prop and actor's mark stands, where the light comes from, and which later beat depends on which position.
 
-**shed / seed / lab (shed worker).** Set `src/assets/sets/shed.ts` (room.ts re-dressed), U 172, GY 1500. Back corner x 330; the doorway is in the left wall (opening x -63..282 at the floor, top y 546-671); light `LIGHT_SHED` from the door at frame left (lab: `LIGHT_LAB`, same door, plus a window in the back wall). Thatch underside above y ~224. Bamboo pole y 650 on posts x 590 / 1530; ropes x 700, 860, 1020, 1180, 1340, bag tops y 684 (upper) and 908 (lower); a fainter row at x 780..1420 on the wall (depth 0.09). Crates by the door x 358 with two spawn bottles on top (dull x 318, good x 398, base y ~1156): this is the bench for `seed`. Crates at right x 1130 with the cash tin (x 1120); calendar on the wall x 1150, y 360. The fruiting bag is x 700 upper; the dropped bag lies on the floor, tie at [900, 1429], body to its left, split open. At 52.79 Sanjeev stands at x 520 facing left (yaw -1), far hand R up at ~[345, 705] holding the good bottle; camera at about cx 492, cy 900, zoom 1.18 and still pushing in toward the left crates.
+**shed / seed / lab (shed worker).** Set `src/assets/sets/shed.ts` (room.ts re-dressed), U 172, GY 1500. Back corner x 330; the doorway is in the left wall (opening x -63..282 at the floor, top y 546-671); light `LIGHT_SHED` from the door at frame left (lab: `LIGHT_LAB`, same door, plus a window in the back wall). Thatch underside above y ~224. Bamboo pole y 650 on posts x 590 / 1530; ropes x 700, 860, 1020, 1180, 1340, bag tops y 684 (upper) and 908 (lower); a fainter row at x 780..1420 on the wall (depth 0.09). Crates by the door x 385 (the bench of `seed`): lota x 304, dull bottle x 372, good bottle x 442, base y ~1156. Hurricane lamp hangs on the near post (base [604, 846]); unlit in shed, lit in seed. Crates at right x 1130 with the cash tin (x 1120); calendar on the wall x 1150, y 360. The fruiting bag is x 700 upper; the dropped bag lies on the floor, tie at [900, 1429], body to its left (grey, not split). At 52.79 Sanjeev stands at x 505 facing left, far hand R at [222, 738] holding the good bottle out into the doorway; seed carries on from the same marks and camera.
+seed: night = gradient overlay plus door darkened, lamp glow. Porters' sacks rest inside the door at x 318 and 196; the near-lens sack covers the frame from 64.47 (lab opens on it and lifts it by 65.66).
+lab (simplest form): same room whitewashed (`LAB_PALETTE`), window x 1420, racks x 800 and 1180, steaming drum x 500, Sanjeev x 930, two farmer silhouettes at the door x 200 / 70. Exit: the dark jamb (`shedJamb`, slab on the left, edge sliding right) covers the frame by 88.47, so `today` opens on it.
 
 ### Village (s1; home and today will reuse it)
 - Set `src/assets/sets/village.ts` (pieces placed per sequence, sized by `u`), props `src/assets/props/village.ts`. Lights `VILLAGE_LIGHTS` (morning left, afternoon right, sunrise left).

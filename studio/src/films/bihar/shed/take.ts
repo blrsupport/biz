@@ -251,8 +251,8 @@ function build() {
   cues.push({ t: tTear + 0.05, what: "plastic", x: LIE[0] - 0.6 * U });
   const tRub = W("real");
   // he rubs the grain between his fingers: the hand works along the bag and back, the body stays down
-  reach(sanjeev, "L", onBag(-0.28, -0.34), { at: tRub + 0.1, dur: 0.26, hand: HANDS.pinch, palm: -1, contact: true, pin: true, layer: "front", look: false, body: false });
-  reach(sanjeev, "L", onBag(-0.38, -0.33), { at: tRub + 0.42, dur: 0.26, hand: HANDS.pinch, palm: -1, contact: true, pin: true, layer: "front", look: false, body: false });
+  reach(sanjeev, "L", onBag(-0.44, -0.36), { at: tRub + 0.1, dur: 0.26, hand: HANDS.pinch, palm: -1, contact: true, pin: true, layer: "front", look: false, body: false });
+  reach(sanjeev, "L", onBag(-0.5, -0.36), { at: tRub + 0.42, dur: 0.26, hand: HANDS.pinch, palm: -1, contact: true, pin: true, layer: "front", look: false, body: false });
   feel(sanjeev, SUNK, { at: W("problem"), dur: 0.3 });
 
   // ------------------------------------------------------------------------------------------------------------
