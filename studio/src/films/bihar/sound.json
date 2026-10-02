@@ -777,6 +777,136 @@
     "fadeOut": 0.15,
     "width": 0.3
    }
+  ],
+  "step.c1": [
+   {
+    "file": "public/sfx/bihar/steps_dirt_barefoot.wav",
+    "variants": [
+     [
+      2.73,
+      3.05
+     ],
+     [
+      1.68,
+      2.0
+     ],
+     [
+      4.85,
+      5.17
+     ],
+     [
+      3.77,
+      4.09
+     ]
+    ],
+    "lead": 0.02,
+    "pk": -35,
+    "fadeOut": 0.1
+   }
+  ],
+  "step.f3": [
+   {
+    "file": "public/sfx/bihar/steps_dirt_barefoot.wav",
+    "variants": [
+     [
+      4.85,
+      5.17
+     ],
+     [
+      3.77,
+      4.09
+     ],
+     [
+      2.73,
+      3.05
+     ],
+     [
+      1.68,
+      2.0
+     ]
+    ],
+    "lead": 0.02,
+    "pk": -37,
+    "fadeOut": 0.1
+   }
+  ],
+  "step.p1": [
+   {
+    "file": "public/sfx/bihar/steps_dirt_barefoot.wav",
+    "variants": [
+     [
+      1.68,
+      2.0
+     ],
+     [
+      2.73,
+      3.05
+     ],
+     [
+      3.77,
+      4.09
+     ],
+     [
+      4.85,
+      5.17
+     ]
+    ],
+    "lead": 0.02,
+    "pk": -33,
+    "fadeOut": 0.1
+   }
+  ],
+  "step.p2": [
+   {
+    "file": "public/sfx/bihar/steps_dirt_barefoot.wav",
+    "variants": [
+     [
+      3.77,
+      4.09
+     ],
+     [
+      4.85,
+      5.17
+     ],
+     [
+      1.68,
+      2.0
+     ],
+     [
+      2.73,
+      3.05
+     ]
+    ],
+    "lead": 0.02,
+    "pk": -33,
+    "fadeOut": 0.1
+   }
+  ],
+  "step.p3": [
+   {
+    "file": "public/sfx/bihar/steps_dirt_barefoot.wav",
+    "variants": [
+     [
+      4.85,
+      5.17
+     ],
+     [
+      1.68,
+      2.0
+     ],
+     [
+      3.77,
+      4.09
+     ],
+     [
+      2.73,
+      3.05
+     ]
+    ],
+    "lead": 0.02,
+    "pk": -35,
+    "fadeOut": 0.1
+   }
   ]
  }
 }
