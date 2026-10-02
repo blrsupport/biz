@@ -1,7 +1,7 @@
 // Bihar Mushroom: sequence "shed". Everything that is drawn at time t, as a display list, back to front.
 // The generic view paints this list and the dry run checks it, so what is checked is what is drawn.
 import { buildCrate } from "../../../assets/props/crate.ts";
-import { growBag, spawnBottle } from "../../../assets/props/mushroom.ts";
+import { growBag, hurricaneLamp, spawnBottle } from "../../../assets/props/mushroom.ts";
 import { buildCalendar, buildTin } from "../../../assets/props/tin.ts";
 import { shedBack, shedFloor, shedJamb, shedRope, shedTop } from "../../../assets/sets/shed.ts";
 import { fade, fill, group, paint, rect, shadow, type as written, type FrameList, type Item } from "../../../engine/draw/list.ts";
@@ -12,7 +12,7 @@ import { area, type Pt } from "../../../engine/geom/vec.ts";
 import { LOOKS, type LookId } from "../../../engine/look/looks.ts";
 import type { Actor, Solved } from "../../../engine/motion/actor.ts";
 import { hash } from "../../../engine/motion/track.ts";
-import { BACKROW_DEPTH, BACK_ROPES, BOTTLE_DULL, BOTTLE_GOOD, CAL, CRATES_R, CRATE_TOP, ROPES, SET, SHED, SHED_PALETTE, TIERS, TIN_AT, WALL_DEPTH, shedTake } from "./take.ts";
+import { BACKROW_DEPTH, BACK_ROPES, BOTTLE_DULL, BOTTLE_GOOD, BOTTLE_SCALE, CAL, CRATES_L, CRATES_R, LAMP_AT, ROPES, SET, SHED, SHED_PALETTE, TIERS, TIN_AT, WALL_DEPTH, shedTake } from "./take.ts";
 
 const { U, GY, W: FW, HGT } = SHED;
 const P = SHED_PALETTE;
@@ -30,13 +30,14 @@ function footContacts(id: string, a: Actor, s: Solved): Shape[] {
 }
 
 // ---- static pieces, built once
-const crate = (id: string, x: number): Shape[] => [
-  ...buildCrate(`${id}/low`, [x, GY - 0.1 * U - 0.5 * U], 1.0 * U, 1.0 * U),
-  ...buildCrate(`${id}/top`, [x + 6, GY - 1.1 * U - 0.4 * U], 0.86 * U, 0.8 * U),
+/** two crates, one on the other (the shapes are shared with `seed`, which stands at the same bench) */
+export const crate = (id: string, c: { x: number; wLow: number; wTop: number }): Shape[] => [
+  ...buildCrate(`${id}/low`, [c.x, GY - 0.1 * U - 0.5 * U], c.wLow, 1.0 * U),
+  ...buildCrate(`${id}/top`, [c.x + 6, GY - 1.1 * U - 0.4 * U], c.wTop, 0.8 * U),
 ];
-const CRATES_LEFT = crate("crateL", (BOTTLE_DULL[0] + BOTTLE_GOOD[0]) / 2);
-const CRATES_RIGHT = crate("crateR", CRATES_R.x);
-const STATIC_CONTACTS: Shape[] = [(BOTTLE_DULL[0] + BOTTLE_GOOD[0]) / 2, CRATES_R.x, 590, 1530].map((x, i) =>
+const CRATES_LEFT = crate("crateL", CRATES_L);
+const CRATES_RIGHT = crate("crateR", CRATES_R);
+const STATIC_CONTACTS: Shape[] = [CRATES_L.x, CRATES_R.x, 590, 1530].map((x, i) =>
   shape(`contact/s${i}`, "floor", ellipse([x, GY - 0.1 * U + 4], (i < 2 ? 0.6 : 0.16) * U, 0.05 * U, 0, 3), { ...flat, tone: "deep", opacity: 0.42 }),
 );
 const ROPE_SHAPES: Shape[] = ROPES.map((x, i) => shedRope(`rope/${i}`, x, SET.poleY, TIERS[1] + 0.3 * U));
@@ -46,9 +47,8 @@ const BACK_BAGS: Shape[] = [
   ...BACK_ROPES.map((x, i) => shedRope(`back/rope${i}`, x, SET.poleY - 0.1 * U, TIERS[1] + 0.2 * U)),
   ...BACK_ROPES.flatMap((x, i) => [0, 1].flatMap((k) => growBag(`back/bag${i}_${k}`, { top: [x, TIERS[k] - 0.1 * U], u: U, scale: 0.86, seed: 20 + i * 2 + k, myc: 0.5 + 0.3 * hash(i + k) }).shapes)),
 ];
-/** the bottles are drawn a size up from the library default, so the one he holds up reads on a phone */
-const BOTTLE_SCALE = 1.35;
 const DULL = spawnBottle("bottle.dull", { at: BOTTLE_DULL, u: U, bad: 1, scale: BOTTLE_SCALE }).shapes;
+const LAMP = hurricaneLamp("lamp", { at: LAMP_AT, u: U, lit: 0 }).shapes;
 
 const big = (shapes: readonly Shape[], min = 420) => shapes.filter((s) => Math.abs(area(s.pts)) > min);
 
@@ -73,7 +73,7 @@ export function shedFrame(t: number, lookId: LookId = "A"): FrameList {
     bagShapes.push(...growBag(b.id, { top: [b.x, TIERS[b.tier]], u: U, sprout: b.sprout.value(t), failed: b.failed.value(t), swing, seed: b.seed }).shapes);
   }
   const da = tk.droppedAt(t);
-  const droppedShapes = growBag(tk.dropped.id, { top: da.top, u: U, failed: tk.dropped.failed.value(t), swing: da.swing, split: tk.split.value(t), seed: tk.dropped.seed }).shapes;
+  const droppedShapes = growBag(tk.dropped.id, { top: da.top, u: U, failed: tk.dropped.failed.value(t), swing: da.swing, seed: tk.dropped.seed }).shapes;
 
   // ---- the bottle: on the crate, then in his far hand
   const kGrab = Math.max(0, Math.min(1, (t - (m.tGrab - 0.1)) / 0.14));
@@ -137,7 +137,7 @@ export function shedFrame(t: number, lookId: LookId = "A"): FrameList {
     written("type.spawn", WALL_DEPTH, { kind: "phrase", ...ty.spawn }, OVER),
     paint("rack", 0, [...SET.rack, ...ROPE_SHAPES, ...bagShapes]),
     paint("contacts", 0, [...STATIC_CONTACTS, ...footContacts("sanjeev", tk.sanjeev, ss)]),
-    paint("props", 0, [...CRATES_LEFT, ...CRATES_RIGHT, ...tin.shapes, ...DULL, ...droppedShapes]),
+    paint("props", 0, [...CRATES_LEFT, ...CRATES_RIGHT, ...tin.shapes, ...LAMP, ...DULL, ...droppedShapes]),
   );
   // the bottle catches the doorlight once he holds it up
   const g = tk.glow.value(t);

@@ -2,12 +2,11 @@
 // "For years, Bihar's mushroom farmers bought their seed from Haryana." The Bihar farmer walks in counting notes,
 // pays the Haryana trader, and the trader swings a white sack into his arms. "Today, because of one man, a village
 // in Bihar sells it back to Haryana." The farmer turns to go, turns back, and the sack goes the other way: into the
-// trader's arms, and the notes come back. This file is the performance as data; it never draws.
-import { CAST, CAST_PALETTE } from "../../../assets/cast/cast.ts";
-import { TIN_PALETTE } from "../../../assets/props/tin.ts";
-import { VILLAGE_PROPS_PALETTE, handPump, strawStack } from "../../../assets/props/village.ts";
-import { VILLAGE_PALETTE, bananaPlant, farCity, farHills, fields, grassTufts, lane, mudHouse, thatchShed, tree, yardGround } from "../../../assets/sets/village.ts";
-import { mergePalettes, type Palette, type Shape } from "../../../engine/draw/shape.ts";
+// trader's arms, and the notes come back. "To understand how we did that, we have to go back to early 2000s." The
+// trader walks off with his sack; the farmer swings the last one up and past the lens (the hand-over to "home").
+// This file is the performance as data; it never draws.
+import { CAST } from "../../../assets/cast/cast.ts";
+import type { Palette } from "../../../engine/draw/shape.ts";
 import { HANDS } from "../../../engine/figure/hand.ts";
 import { mixFace, type Expression } from "../../../engine/figure/head.ts";
 import { add, lerpPt, smoothstep, type Pt } from "../../../engine/geom/vec.ts";
@@ -18,51 +17,22 @@ import { dustHands, feel, handsOnHips, lookAt, nod, reach, release } from "../..
 import { Camera, layerTransform } from "../../../engine/stage/camera.ts";
 import { makeAnchors } from "../../../engine/time/clock.ts";
 import type { PhraseCue } from "../../../engine/type/blockspec.ts";
-import { PALETTE } from "../palette.ts";
 import { WORDS } from "../words.ts";
+import { DEPTH, LANE, LANE_PALETTE } from "./lane.ts";
 
 const ANCHOR = makeAnchors(WORDS);
 /** frame size, px per head-height, the ground line, and the stretch of the film this sequence covers (from word anchors) */
-export const S1 = { W: 1080, HGT: 1920, U: 172, GY: 1500, fps: 30, t0: 0, end: Math.round(ANCHOR("sanjeev") * 100) / 100 + 0.1 } as const;
-export const S1_PALETTE: Palette = mergePalettes(CAST_PALETTE, PALETTE, VILLAGE_PALETTE, VILLAGE_PROPS_PALETTE, TIN_PALETTE);
+export const S1 = { ...LANE, fps: 30, t0: 0, end: Math.round(ANCHOR("sanjeev") * 100) / 100 + 0.1 } as const;
+export const S1_PALETTE: Palette = LANE_PALETTE;
 
 const { U, GY } = S1;
 const FRAME = { width: S1.W, height: S1.HGT };
 const REF = { cx: S1.W / 2, cy: S1.HGT / 2 };
 
-/** How far behind (or in front of) the actors each layer is, for the camera's parallax. */
-export const DEPTH = { sky: 6, far: 4, type: 30, fields: 1.6, house: 0.35, pump: 0.12, near: -0.3 } as const;
-export const JUNCTION = GY - 0.36 * U;
-/** the horizon, where the fields meet the sky */
-export const HORIZON = 1012;
-
-// ---- the set, built once
-const HOUSE_FOOT = 1262;
-const HU = 112;
-export const HOUSE = mudHouse("house", { x: 300, foot: HOUSE_FOOT, u: HU, seed: 3 });
-export const SHED = thatchShed("shed", { x: 1000, foot: HOUSE_FOOT, u: HU, seed: 5 });
-export const SET = {
-  far: [...farHills("hills", { x0: -1900, x1: 320, base: HORIZON + 4, hi: 240, seed: 3 }), ...farCity("city", { x0: 780, x1: 1900, base: HORIZON + 4, seed: 7 })],
-  fields: fields("fields", { x0: -1600, x1: 2600, top: HORIZON, bottom: 1330, seed: 4 }),
-  yard: yardGround("yard", { x0: -1600, x1: 2600, top: HOUSE_FOOT - 8, bottom: 1700, u: HU, seed: 2 }),
-  trees: [...tree("tree0", { x: 1150, foot: HOUSE_FOOT - 30, h: 620, seed: 2 }), ...tree("tree1", { x: -420, foot: HOUSE_FOOT - 40, h: 560, seed: 9 })],
-  straw: strawStack("straw", { x: 1420, ground: HOUSE_FOOT + 6, w: 360, h: 300, seed: 4 }),
-  lane: lane("lane", { x0: -1600, x1: 2700, top: JUNCTION, bottom: 2600, u: U, seed: 6 }),
-  near: grassTufts("near", { x0: -600, x1: 1900, y: 1990, h: 120, count: 22, seed: 5 }),
-};
-/** banana plants: where each stands in the house layer (they sway, so they are built each frame) */
-export const BANANAS = [
-  { id: "banana0", x: 742, foot: HOUSE_FOOT + 4, h: 460, seed: 2 },
-  { id: "banana1", x: -170, foot: HOUSE_FOOT + 2, h: 400, seed: 5 },
-  { id: "banana2", x: 1290, foot: HOUSE_FOOT + 6, h: 380, seed: 8 },
-];
-export const PUMP = { x: 1160, ground: JUNCTION + 6, u: 150, dir: -1 as const };
-export const PUMP_SHAPES: Shape[] = handPump("pump", { ...PUMP, handle: 0 }).shapes;
-
-/** the white sacks: how big, and where they rest */
-export const SACK = { w: 0.95 * U, h: 1.25 * U };
-const REST_A: Pt = [458, GY - 0.6 * U];
-export const REST_B: Pt = [232, GY - 0.6 * U];
+/** the white sacks: how big (head-heights), and where they rest */
+export const SACK = { w: 0.95, h: 1.3 };
+const REST_A: Pt = [458, GY - 0.65 * U];
+const REST_B: Pt = [232, GY - 0.65 * U];
 
 // ---- the faces of this take
 const EASY_F: Expression = { lidU: 0.92, lidL: 0.88, browRaise: 0.3, browTilt: -0.25, smile: 0.25, open: 0, wide: 0.05, jaw: 0 };
@@ -79,7 +49,7 @@ function build() {
 
   // ------------------------------------------------------------------------------------------------------------
   // Camera first. It comes in from the right with the farmer and pushes in on the two; then it holds the two-shot,
-  // drifting.
+  // drifting; at the end it follows the farmer to the last sack.
   // ------------------------------------------------------------------------------------------------------------
   const cam = new Camera(706, 955, 1.0);
   cam.keys([
@@ -90,8 +60,10 @@ function build() {
     { t: 5.2, cx: 598, cy: 946, zoom: 1.08 },
     { t: 6.6, cx: 578, cy: 945, zoom: 1.09 },
     { t: 8.4, cx: 566, cy: 944, zoom: 1.1 },
-    { t: 10.4, cx: 600, cy: 944, zoom: 1.1 },
-    { t: S1.end + 0.3, cx: 640, cy: 944, zoom: 1.1 },
+    { t: 9.6, cx: 524, cy: 946, zoom: 1.1 },
+    { t: 10.6, cx: 474, cy: 950, zoom: 1.13 },
+    { t: 11.5, cx: 464, cy: 955, zoom: 1.15 },
+    { t: S1.end + 0.3, cx: 458, cy: 958, zoom: 1.16 },
   ]);
   const under = (t: number, k: number, sx: number, sy: number): Pt => {
     const lt = layerTransform(cam.view(t), FRAME, k, REF);
@@ -143,13 +115,12 @@ function build() {
   const tBought = W("bought");
   const tSeed = W("seed");
   const tHaryana = W("haryana");
-  // he stops counting and holds the notes out
   release(farmer, "R", { at: fw.arrive + 0.05, dur: 0.35 });
   lookAt(farmer, [TX + 0.4 * U, GY - 4.5 * U], { at: fw.arrive - 0.2 });
   feel(farmer, EASY_F, { at: fw.arrive - 0.1, dur: 0.3 });
   const GIVE: Pt = [572, GY - 2.86 * U];
   reach(farmer, "L", GIVE, { at: tBought, dur: 0.34, hand: HANDS.pinch, palm: -1, look: false, bow: 0.15, pin: true, layer: "front" });
-  // the trader takes them a beat later with his far hand, and nods
+  // the trader takes them a beat later with his far hand
   const TAKE: Pt = [GIVE[0] - 0.62 * U, GIVE[1] + 0.02 * U];
   const tTaken = tBought + 0.16;
   reach(trader, "L", TAKE, { at: tTaken, dur: 0.3, hand: HANDS.pinch, palm: 1, look: false, body: false, contact: true, layer: "back" });
@@ -160,7 +131,7 @@ function build() {
   const armsF = { L: [-0.42, 0.16] as Pt, R: [-0.36, -0.26] as Pt };
   const armsT = { R: [0.42, 0.16] as Pt, L: [0.36, -0.26] as Pt };
   let sackA: (t: number) => { c: Pt; tilt: number } = () => ({ c: REST_A, tilt: 0 });
-  const onSack = (rel: Pt) => (t: number): Pt => add(sackA(t).c, [rel[0] * SACK.w, rel[1] * SACK.h]);
+  const onSack = (rel: Pt) => (t: number): Pt => add(sackA(t).c, [rel[0] * SACK.w * U, rel[1] * SACK.h * U]);
   // the trader bends, takes the sack by its ear, and swings it up and across
   const tGrab = tTaken + 0.12;
   trader.drop.to(0.64, { at: tGrab - 0.04, dur: 0.3, w: WEIGHT.body, windup: 0 });
@@ -181,7 +152,6 @@ function build() {
   reach(farmer, "L", onSack(armsF.L)(tSeed - 0.04), { at: tSeed - 0.04, dur: 0.3, hand: HANDS.cup, look: false, body: false, contact: true, pin: onSack(armsF.L), layer: "front" });
   reach(farmer, "R", onSack(armsF.R)(tSeed - 0.02), { at: tSeed - 0.02, dur: 0.3, hand: HANDS.grip, look: false, body: false, contact: true, pin: onSack(armsF.R), layer: "back" });
   lookAt(farmer, handOff, { at: tSeed - 0.3, dur: 0.2 });
-  // the trader lets go at the top of the swing
   release(trader, "R", { at: tSeed + 0.32, dur: 0.4 });
   feel(trader, EASY_T, { at: tSeed + 0.3, dur: 0.3 });
   cues.push({ t: tSeed, what: "thud.sack", x: 640 });
@@ -222,7 +192,6 @@ function build() {
   lookAt(farmer, [1500, GY - 4.4 * U], { at: tToday + 0.2 });
   feel(farmer, EASY_F, { at: tToday + 0.3, dur: 0.3 });
   const fo = farmer.walkTo(880, { start: tToday + 0.5, pace: 1.6, step: 1.0 });
-  // on "one man" he stops and looks back over his shoulder
   lookAt(farmer, [TX, GY - 4.6 * U], { at: Math.max(tOne + 0.15, fo.arrive) });
   feel(farmer, SURPRISED, { at: tOne + 0.3, dur: 0.24 });
   farmer.turnTo(-1.15, { at: tVillage + 0.45, dur: 0.5 });
@@ -266,8 +235,48 @@ function build() {
   const tf = farmer.solve(tTaken2 + 0.8);
   reach(farmer, "L", [tf.shoulders.L[0] - 0.22 * U, tf.shoulders.L[1] + 0.5 * U], { at: tTaken2 + 0.8, dur: 0.34, hand: HANDS.pinch, look: false, body: false, bow: 0.12, layer: "front" });
   release(farmer, "L", { at: tTaken2 + 1.3, dur: 0.4 });
+  cues.push({ t: tToday + 0.42, what: "turn", x: 760 }, { t: tVillage + 0.45, what: "turn", x: 860 });
 
-  // the sack's whole journey, now that both men's moves are written
+  // ------------------------------------------------------------------------------------------------------------
+  // Beat 3. "To understand how we did that, we have to go back to early 2000s." The trader takes his sack away
+  // left. The farmer goes to the last sack, heaves it up, and on "back" swings it at the lens.
+  // ------------------------------------------------------------------------------------------------------------
+  const tTo = W("to understand");
+  const tSwing = W("back", 2);
+  const tEarly = W("early");
+  const t2000 = W("2000s");
+  trader.turnTo(-1.05, { at: tTo + 0.35, dur: 0.45 });
+  const tw = trader.walkTo(-430, { start: tTo + 0.5, pace: 1.8, step: 1.3 });
+  feel(trader, EASY_T, { at: tTo + 0.3, dur: 0.3 });
+  lookAt(farmer, [TX - 1.2 * U, GY - 4.4 * U], { at: tTo + 0.45 });
+  nod(farmer, { at: tTo + 0.8, amount: 0.1 });
+  const fs = farmer.walkTo(398, { start: tTo + 0.85, pace: 1.85, step: 1.25 });
+  let sackB: (t: number) => { c: Pt; tilt: number } = () => ({ c: REST_B, tilt: 0 });
+  const onSackB = (rel: Pt) => (t: number): Pt => add(sackB(t).c, [rel[0] * SACK.w * U, rel[1] * SACK.h * U]);
+  lookAt(farmer, REST_B, { at: fs.arrive - 0.3 });
+  const tGrabB = Math.max(fs.arrive + 0.28, tSwing - 0.5);
+  farmer.drop.to(0.6, { at: tGrabB - 0.02, dur: 0.3, w: WEIGHT.body, windup: 0 });
+  farmer.bend.to(-0.45, { at: tGrabB, dur: 0.3, w: WEIGHT.body, windup: 0 });
+  reach(farmer, "L", onSackB([-0.36, -0.46])(tGrabB), { at: tGrabB, dur: 0.28, hand: HANDS.grip, look: false, body: false, contact: true, pin: onSackB([-0.36, -0.46]), layer: "front" });
+  reach(farmer, "R", onSackB([0.3, -0.46])(tGrabB + 0.03), { at: tGrabB + 0.03, dur: 0.28, hand: HANDS.grip, look: false, body: false, contact: true, pin: onSackB([0.3, -0.46]), layer: "back" });
+  feel(farmer, STRAIN, { at: tGrabB + 0.05, dur: 0.14 });
+  cues.push({ t: tGrabB + 0.08, what: "heave", x: 330 });
+  // up and round: the sack comes off the ground, he rises with it and lets it fly at us
+  const tLiftB = tGrabB + 0.06;
+  const HIGH: Pt = [300, GY - 3.0 * U];
+  const pathB = new Path2(REST_B);
+  pathB.to(HIGH, { at: tSwing, dur: tSwing - tLiftB, w: WEIGHT.heavy, windup: 0, overshoot: 0, bow: 0.15 });
+  farmer.drop.to(0.08, { at: tSwing + 0.04, dur: tSwing - tLiftB, w: WEIGHT.heavy, windup: 0 });
+  farmer.bend.to(0.06, { at: tSwing + 0.06, dur: tSwing - tLiftB, w: WEIGHT.heavy, windup: 0 });
+  farmer.lean.to(0.08, { at: tSwing, dur: tSwing - tLiftB, w: WEIGHT.heavy, windup: 0 });
+  const tRel = tSwing + 0.08;
+  release(farmer, "L", { at: tRel + 0.3, dur: 0.3 });
+  release(farmer, "R", { at: tRel + 0.32, dur: 0.3 });
+  farmer.turnTo(-0.45, { at: tRel + 0.3, dur: 0.35 });
+  feel(farmer, PROUD, { at: tRel + 0.4, dur: 0.3 });
+  cues.push({ t: tRel, what: "whoosh", x: 540 });
+
+  // the sacks' whole journeys, now that both men's moves are written
   sackA = (t: number) => {
     if (t < tLift) return { c: REST_A, tilt: 0 };
     if (t < tSeed + 0.12) {
@@ -285,9 +294,33 @@ function build() {
     const b = carryT(t);
     const c = lerpPt(a, b, k);
     if (t < tSells + 0.02) return { c: [c[0], c[1] - 0.28 * U * Math.sin(Math.PI * k)], tilt: 0.2 * Math.sin(Math.PI * k) };
-    return { c: [b[0], b[1] + sink(t, tSells, 0.12)], tilt: 0.05 };
+    return { c: [b[0], b[1] + sink(t, tSells, 0.12)], tilt: 0.05 * Math.sin(trader.yaw.value(t)) };
+  };
+  sackB = (t: number) => {
+    if (t < tLiftB) return { c: REST_B, tilt: 0 };
+    return { c: pathB.value(Math.min(t, tRel)), tilt: -0.5 * smoothstep(tLiftB, tSwing, t) };
   };
   const sackHolder = (t: number): "ground" | "trader" | "farmer" => (t < tLift ? "ground" : t < tSeed ? "trader" : t < tSells ? "farmer" : "trader");
+
+  // past the lens: from where it leaves his hands it flies at us, fills the frame, and goes off to the right
+  // (in screen pixels; "home" draws the end of it over its own first frames)
+  const v0 = layerTransform(cam.view(tRel), FRAME, 0, REF);
+  const relB = sackB(tRel);
+  const p0: Pt = [v0.tx + relB.c[0] * v0.s, v0.ty + relB.c[1] * v0.s];
+  const u0 = U * v0.s;
+  const tCover = 12.2;
+  const tOff = tCover + 0.58;
+  const pass = (t: number): { c: Pt; u: number; tilt: number } | null => {
+    if (t < tRel || t > tOff) return null;
+    if (t <= tCover) {
+      const u = (t - tRel) / (tCover - tRel);
+      const k = Math.pow(u, 2.4);
+      const c = lerpPt(p0, [560, 1010], k);
+      return { c: [c[0], c[1] - 240 * Math.sin(Math.PI * u) * (1 - k)], u: u0 * (1 + 11 * Math.pow(k, 1.25)), tilt: relB.tilt * (1 - k) - 0.08 * k };
+    }
+    const v = smoothstep(tCover, tOff, t);
+    return { c: [560 + 2400 * v * v, 1010 - 120 * v], u: u0 * 12 * (1 + 0.25 * v), tilt: -0.08 - 0.2 * v };
+  };
 
   // the notes: whose hand they are in, and how they point
   const notes = (t: number): { who: "farmer" | "trader" | null; side: "L" | "R"; ang: number; size: number } => {
@@ -298,25 +331,24 @@ function build() {
     if (t < tTaken2 + 0.8) return { who: "farmer", side: "L", ang: Math.PI - 0.2, size: 0.9 * (1 - 0.55 * smoothstep(tTaken2 + 0.6, tTaken2 + 0.8, t)) };
     return { who: null, side: "L", ang: 0, size: 0 };
   };
-  cues.push({ t: tToday + 0.42, what: "turn", x: 760 }, { t: tVillage + 0.45, what: "turn", x: 860 });
 
-  // ------------------------------------------------------------------------------------------------------------
-  // Life: birds cross the morning sky; the banana leaves stir.
-  // ------------------------------------------------------------------------------------------------------------
-  const birds = [0, 1, 2].map((i) => ({ t0: 0.2 + 0.35 * i, y: 186 + 38 * i, speed: 150 + 22 * i, x0: 1180 + 70 * i, size: 22 - 3 * i }));
+  // life: birds cross the morning sky
+  const birds = [0, 1, 2].map((i) => ({ t0: 0.2 + 0.35 * i, y: 186 + 38 * i, speed: 270 + 30 * i, x0: 1180 + 70 * i, size: 22 - 3 * i }));
   cues.push({ t: 0.3, what: "birds" });
 
   // ------------------------------------------------------------------------------------------------------------
   // What is written across the sky, each piece on its word, one block at a time
-  // ------------------------------------------------------------------------------------------------------------
   // (the type sits high: the two men's heads come up to about y 480 on screen)
+  // ------------------------------------------------------------------------------------------------------------
   const at1 = under(tHaryana, DEPTH.type, 92, 430);
   const at2 = under(tOne, DEPTH.type, 92, 430);
   const at3 = under(tBack, DEPTH.type, 92, 342);
+  const at4 = under(tEarly, DEPTH.type, 92, 342);
   const type = {
     haryana: { x: at1[0], y: at1[1], size: 160, maxW: 760, lines: [{ lead: "HARYANA", text: "", at: tHaryana }], out: tToday + 0.25 } as PhraseCue,
     oneMan: { x: at2[0], y: at2[1], size: 160, maxW: 760, lines: [{ lead: "ONE MAN", text: "", at: tOne }], out: tSells - 0.35 } as PhraseCue,
     back: { x: at3[0], y: at3[1], size: 104, maxW: 790, leading: 1.4, lines: [{ text: "BACK TO", at: tBack }, { lead: "HARYANA", text: "", at: tHaryana2 }], out: tHaryana2 + 1.1 } as PhraseCue,
+    early: { x: at4[0], y: at4[1], size: 104, maxW: 790, leading: 1.4, lines: [{ text: "EARLY", at: tEarly }, { lead: "2000s", text: "", at: t2000 }], out: tCover - 0.2 } as PhraseCue,
   };
 
   return {
@@ -324,12 +356,15 @@ function build() {
     trader,
     farmer,
     sackA: (t: number) => sackA(t),
+    sackB: (t: number) => sackB(t),
     sackHolder,
+    pass,
     notes,
     birds,
     type,
     cues,
-    marks: { tBought, tTaken, tGrab, tLift, tSeed, tHaryana, tPocket, tToday, tOne, tVillage, tPass, tSells, tBack, tNotesOut, tOut, tTaken2, farmerIn: fw.arrive, farmerBack: fb.arrive },
+    REST_B,
+    marks: { tBought, tTaken, tGrab, tLift, tSeed, tHaryana, tPocket, tToday, tOne, tVillage, tPass, tSells, tBack, tNotesOut, tOut, tTaken2, tTo, tGrabB, tLiftB, tSwing, tRel, tEarly, t2000, tCover, tOff, farmerIn: fw.arrive, farmerBack: fb.arrive, farmerAtB: fs.arrive, traderOut: tw.arrive },
   };
 }
 

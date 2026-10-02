@@ -40,6 +40,7 @@ export const VILLAGE_PALETTE: Palette = {
   "vil.bark": "#6e5440",
   // the house and the shed
   "vil.mud": "#c99466",
+  "vil.lime": "#ece6d6",
   "vil.plinth": "#a8744f",
   "vil.stain": "#ae7c56",
   "vil.brick": "#ad6044",
@@ -262,9 +263,10 @@ export function mudHouse(id: string, o: { x: number; foot: number; u: number; se
  * `x` is its middle. The parts in front of the doorway (the jambs, the lintel, the thatch) are in `front`; the dark
  * of the doorway is in `dark`, so a figure can be put between them and walk into the dark.
  */
-export function thatchShed(id: string, o: { x: number; foot: number; u: number; seed?: number }): { back: Shape[]; dark: Shape[]; front: Shape[]; door: { x0: number; x1: number; y0: number; y1: number } } {
+export function thatchShed(id: string, o: { x: number; foot: number; u: number; seed?: number; wall?: string }): { back: Shape[]; dark: Shape[]; front: Shape[]; door: { x0: number; x1: number; y0: number; y1: number } } {
   const { x, foot: g, u } = o;
   const seed = o.seed ?? 1;
+  const mud = o.wall ?? mud;
   const W = 2.3 * u;
   const eave = g - 3.6 * u;
   const door = { x0: x - 0.85 * u, x1: x + 0.6 * u, y0: g - 3.0 * u, y1: g };
@@ -272,15 +274,15 @@ export function thatchShed(id: string, o: { x: number; foot: number; u: number; 
   const dark: Shape[] = [shape(`${id}/dark`, "vil.dark", box(door.x0, door.y0, door.x1, door.y1 + 4), flat)];
   const front: Shape[] = [];
   // the wall round the doorway, as three pieces so the doorway is a real opening
-  front.push(shape(`${id}/wallL`, "vil.mud", box(x - W, eave, door.x0, g + 6), flat));
-  front.push(shape(`${id}/wallR`, "vil.mud", box(door.x1, eave, x + W, g + 6), flat));
-  front.push(shape(`${id}/wallT`, "vil.mud", box(door.x0 - 2, eave, door.x1 + 2, door.y0), flat));
+  front.push(shape(`${id}/wallL`, mud, box(x - W, eave, door.x0, g + 6), flat));
+  front.push(shape(`${id}/wallR`, mud, box(door.x1, eave, x + W, g + 6), flat));
+  front.push(shape(`${id}/wallT`, mud, box(door.x0 - 2, eave, door.x1 + 2, door.y0), flat));
   front.push(...stains(`${id}/stains`, "vil.stain", { x0: x - W, x1: door.x0 - 10, top: eave + 0.3 * u, u, count: 2, seed }));
   front.push(shape(`${id}/plinthL`, "vil.plinth", box(x - W, g - 0.38 * u, door.x0, g + 6), flat));
   front.push(shape(`${id}/plinthR`, "vil.plinth", box(door.x1, g - 0.38 * u, x + W, g + 6), flat));
   front.push(shape(`${id}/lintel`, "vil.pole", box(door.x0 - 0.18 * u, door.y0 - 0.12 * u, door.x1 + 0.18 * u, door.y0 + 0.02 * u), { form: "plane", facing: [0, -0.3] }));
-  front.push(shape(`${id}/jambL`, "vil.mud", box(door.x0 - 0.1 * u, door.y0, door.x0, g + 6), { ...flat, tone: "shade" }));
-  front.push(shape(`${id}/eave.shade`, "vil.mud", box(x - W, eave, x + W, eave + 0.5 * u), { ...flat, tone: "deep", opacity: 0.5 }));
+  front.push(shape(`${id}/jambL`, mud, box(door.x0 - 0.1 * u, door.y0, door.x0, g + 6), { ...flat, tone: "shade" }));
+  front.push(shape(`${id}/eave.shade`, mud, box(x - W, eave, x + W, eave + 0.5 * u), { ...flat, tone: "deep", opacity: 0.5 }));
   // the poles that hold the overhang
   for (const px of [x - W - 0.25 * u, x + W + 0.25 * u]) front.push(shape(`${id}/pole${px < x ? "L" : "R"}`, "vil.pole", box(px - 0.07 * u, eave - 0.1 * u, px + 0.07 * u, g + 4), { depth: 0.05 * u }));
   // the thatch

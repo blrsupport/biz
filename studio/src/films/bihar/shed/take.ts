@@ -37,21 +37,29 @@ const { U, GY } = SHED;
 
 // ---- the set, built once
 export const CORNER = 330;
-export const SET = buildShed({ GY, u: U, x0: -900, x1: 2100, y0: -900, y1: 2600, corner: CORNER, posts: [590, 1530] });
+export const SET = buildShed({ GY, u: U, x0: -900, x1: 2100, y0: -900, y1: 2600, corner: CORNER, posts: [590, 1530], thatchAt: 7.75 });
 const tierTop = (k: number) => SET.poleY + 0.2 * U + k * 1.3 * U;
 export const ROPES = [700, 860, 1020, 1180, 1340];
 export const BACK_ROPES = [780, 940, 1100, 1260, 1420];
 export const TIERS = [tierTop(0), tierTop(1)];
 /** the two crates by the door, with the spawn bottles on top; the two by the right wall, with the tin */
-export const CRATES_L = { x: 360, lowTop: GY - 0.1 * U - 1.0 * U, top: 0 };
-export const CRATES_R = { x: 1130 };
+/** the crates by the door (the bench of `seed`): middle x, and the widths of the low and the top crate */
+export const CRATES_L = { x: 385, wLow: 1.25 * U, wTop: 1.2 * U };
+export const CRATES_R = { x: 1130, wLow: 1.0 * U, wTop: 0.86 * U };
 export const CRATE_TOP = GY - 0.1 * U - 1.0 * U - 0.8 * U - 0.1 * U;
-export const BOTTLE_DULL: Pt = [318, CRATE_TOP + 4];
-export const BOTTLE_GOOD: Pt = [398, CRATE_TOP + 4];
+export const BOTTLE_DULL: Pt = [372, CRATE_TOP + 4];
+export const BOTTLE_GOOD: Pt = [442, CRATE_TOP + 4];
+/** the hurricane lamp on the bench, unlit here (it is lit in `seed`) */
+export const LAMP_AT: Pt = [302, CRATE_TOP + 2];
+/** the bottles are drawn a size up from the library default, so the one he holds up reads on a phone */
+export const BOTTLE_SCALE = 1.35;
+/** the state of the bags when the take ends (seed carries on from it) */
+export const FRUITING_AT_END = "bag0_0";
+export const FAILED_AT_END = ["bag3_0", "bag4_1", "bag1_1", "bag2_1", "bag4_0"];
 export const TIN_AT = { x: 1120, base: CRATE_TOP + 6, u: U };
 export const CAL = { x: 1150, y: 360, w: 124, h: 186 };
 /** where the dropped bag lies on the floor: its tie, and it lies along the floor to the left of it */
-const LIE: Pt = [900, GY - 0.12 * U - 0.29 * U];
+export const LIE: Pt = [900, GY - 0.12 * U - 0.29 * U];
 
 // ---- the faces of this take (resting faces carry the inner brow ends a little high)
 const EASY: Expression = { lidU: 0.94, lidL: 0.88, browRaise: 0.3, browTilt: -0.4, smile: 0.2, open: 0, wide: 0.05, jaw: 0 };
@@ -161,10 +169,10 @@ function build() {
   const tTight = W("tight");
   const lid = new Track(0);
   const lidAt = (t: number): Pt => tinPoints(TIN_AT, lid.value(t)).lidEdge;
-  sanjeev.drop.to(0, { at: tMoney - 0.3, dur: 0.45, w: WEIGHT.body });
-  sanjeev.bend.to(0, { at: tMoney - 0.28, dur: 0.45, w: WEIGHT.body });
-  sanjeev.lean.to(0, { at: tMoney - 0.3, dur: 0.45, w: WEIGHT.body });
-  const sw = sanjeev.walkTo(1000, { start: tMoney - 0.5, pace: 2.1, step: 1.2 });
+  sanjeev.drop.to(0, { at: tMoney + 0.1, dur: 0.45, w: WEIGHT.body });
+  sanjeev.bend.to(0, { at: tMoney + 0.12, dur: 0.45, w: WEIGHT.body });
+  sanjeev.lean.to(0, { at: tMoney + 0.1, dur: 0.45, w: WEIGHT.body });
+  const sw = sanjeev.walkTo(1000, { start: tMoney - 0.12, pace: 2.1, step: 1.2 });
   lookAt(sanjeev, [TIN_AT.x, TIN_AT.base - 0.2 * U], { at: tMoney - 0.1 });
   const tLidAt = Math.max(sw.arrive + 0.1, tTight - 0.15);
   sanjeev.bend.to(0.22, { at: tLidAt, dur: 0.36, w: WEIGHT.body });
@@ -227,21 +235,23 @@ function build() {
   const tBut = W("but", 2);
   sanjeev.turnTo(-1.0, { at: tBut + 0.2, dur: 0.45 });
   lookAt(sanjeev, [LIE[0] - 0.5 * U, LIE[1]], { at: tBut + 0.15 });
-  sanjeev.walkTo(875, { start: tBut + 0.45, pace: 1.6, step: 0.8 });
-  crouch(sanjeev, 1.0, 0.72, { at: tBut + 1.05, dur: 0.55, w: WEIGHT.body });
+  sanjeev.walkTo(862, { start: tBut + 0.45, pace: 1.6, step: 0.8 });
+  crouch(sanjeev, 1.15, 0.8, { at: tBut + 1.05, dur: 0.55, w: WEIGHT.body });
   feel(sanjeev, FOCUS, { at: tBut + 0.6, dur: 0.3 });
   const tHands = tBut + 1.15;
   const onBag = (dx: number, dy: number): Pt => [LIE[0] + dx * U, LIE[1] + dy * U];
-  reach(sanjeev, "L", onBag(-0.5, -0.27), { at: tHands, dur: 0.4, hand: HANDS.grip, palm: -1, contact: true, pin: true, layer: "front", look: false, body: false });
-  reach(sanjeev, "R", onBag(-0.72, -0.27), { at: tHands + 0.08, dur: 0.4, hand: HANDS.grip, contact: true, pin: true, layer: "back", look: false, body: false });
+  reach(sanjeev, "L", onBag(-0.5, -0.33), { at: tHands, dur: 0.4, hand: HANDS.grip, palm: -1, contact: true, pin: true, layer: "front", look: false, body: false });
+  reach(sanjeev, "R", onBag(-0.72, -0.33), { at: tHands + 0.08, dur: 0.4, hand: HANDS.grip, contact: true, pin: true, layer: "back", look: false, body: false });
   const split = new Track(0);
   const tTear = W("figures");
   split.to(1, { at: tTear + 0.2, dur: 0.36, w: WEIGHT.hand, windup: 0 });
-  reach(sanjeev, "L", onBag(-0.36, -0.27), { at: tTear + 0.2, dur: 0.36, hand: HANDS.grip, contact: true, pin: true, layer: "front", look: false, body: false });
-  reach(sanjeev, "R", onBag(-0.84, -0.27), { at: tTear + 0.22, dur: 0.36, hand: HANDS.grip, contact: true, pin: true, layer: "back", look: false, body: false });
-  cues.push({ t: tTear + 0.05, what: "tear", x: LIE[0] - 0.6 * U });
+  reach(sanjeev, "L", onBag(-0.36, -0.33), { at: tTear + 0.2, dur: 0.36, hand: HANDS.grip, contact: true, pin: true, layer: "front", look: false, body: false });
+  reach(sanjeev, "R", onBag(-0.84, -0.33), { at: tTear + 0.22, dur: 0.36, hand: HANDS.grip, contact: true, pin: true, layer: "back", look: false, body: false });
+  cues.push({ t: tTear + 0.05, what: "plastic", x: LIE[0] - 0.6 * U });
   const tRub = W("real");
-  pat(sanjeev, "L", onBag(-0.55, -0.3), { at: tRub, times: 3, every: 0.17, palm: -1, layer: "front" });
+  // he rubs the grain between his fingers: the hand works along the bag and back, the body stays down
+  reach(sanjeev, "L", onBag(-0.28, -0.34), { at: tRub + 0.1, dur: 0.26, hand: HANDS.pinch, palm: -1, contact: true, pin: true, layer: "front", look: false, body: false });
+  reach(sanjeev, "L", onBag(-0.38, -0.33), { at: tRub + 0.42, dur: 0.26, hand: HANDS.pinch, palm: -1, contact: true, pin: true, layer: "front", look: false, body: false });
   feel(sanjeev, SUNK, { at: W("problem"), dur: 0.3 });
 
   // ------------------------------------------------------------------------------------------------------------
@@ -258,7 +268,7 @@ function build() {
   sanjeev.drop.to(0, { at: tUp, dur: 0.5, w: WEIGHT.body });
   sanjeev.bend.to(0, { at: tUp + 0.04, dur: 0.5, w: WEIGHT.body });
   sanjeev.lean.to(0, { at: tUp, dur: 0.5, w: WEIGHT.body });
-  const walkB = sanjeev.walkTo(520, { start: tUp + 0.2, pace: 2.0, step: 1.25 });
+  const walkB = sanjeev.walkTo(505, { start: tUp + 0.2, pace: 2.0, step: 1.25 });
   lookAt(sanjeev, [BOTTLE_GOOD[0], BOTTLE_GOOD[1] - 0.3 * U], { at: walkB.arrive - 0.35 });
   feel(sanjeev, FOCUS, { at: walkB.arrive - 0.2, dur: 0.3 });
   const tSeed = W("seed", 2);
@@ -266,10 +276,10 @@ function build() {
   const grabAt: Pt = [BOTTLE_GOOD[0], BOTTLE_GOOD[1] - 0.3 * U];
   reach(sanjeev, "R", grabAt, { at: tGrab, dur: 0.4, hand: HANDS.grip, palm: 1, contact: true, look: false, layer: "back" });
   cues.push({ t: tGrab, what: "glass", x: BOTTLE_GOOD[0] });
-  // forward and up, ahead of his face at mouth height, so the arm reads in front of the chest
-  const RAISE: Pt = [345, 705];
+  // out at arm's length, into the light of the doorway, a little below his eyes
+  const RAISE: Pt = [222, 738];
   const tRaise = tSeed + 0.12;
-  reach(sanjeev, "R", RAISE, { at: tRaise, dur: 0.45, hand: HANDS.grip, palm: 1, pin: true, look: false, bow: 0.22, body: false, layer: "back" });
+  reach(sanjeev, "R", RAISE, { at: tRaise, dur: 0.5, hand: HANDS.grip, palm: 1, pin: true, look: false, bow: 0.18, layer: "back" });
   lookAt(sanjeev, [RAISE[0], RAISE[1] - 0.25 * U], { at: tRaise - 0.05 });
   feel(sanjeev, WONDER, { at: tRaise + 0.25, dur: 0.35 });
   handsOnHips(sanjeev, { at: tRaise + 0.45, dur: 0.45, sides: ["L"] });
@@ -322,22 +332,23 @@ function build() {
   // ------------------------------------------------------------------------------------------------------------
   const type = {
     engineer: {
-      x: 160,
-      y: 330,
-      size: 132,
-      maxW: 700,
+      x: 150,
+      y: 312,
+      size: 136,
+      maxW: 740,
+      leading: 1.25,
       lines: [
         { text: "AN ENGINEER", at: W("an", 2) },
         { text: "GROWING", at: W("growing", 2) },
         { lead: "MUSHROOMS?", text: "", at: W("mushrooms") },
       ],
-      out: W("mushrooms") + 0.45,
+      out: W("mushrooms") + 0.25,
     } as PhraseCue,
     years: {
       x: 260,
       y: 330,
-      cap: 134,
-      maxW: 740,
+      cap: 136,
+      maxW: 770,
       label: { text: "6 LONG YEARS", at: tSix },
       parts: [
         { text: "2002", at: t2002 },
@@ -345,7 +356,7 @@ function build() {
       ],
       out: tBut,
     } as NumberCue,
-    spawn: { x: 118, y: 470, size: 170, maxW: 520, lines: [{ lead: "SPAWN", text: "", at: W("spawn") }], out: SHED.end - 0.1 } as PhraseCue,
+    spawn: { x: 118, y: 448, size: 170, maxW: 520, lines: [{ lead: "SPAWN", text: "", at: W("spawn") }], out: SHED.end - 0.1 } as PhraseCue,
   };
 
   return {
@@ -368,6 +379,7 @@ function build() {
     dusk,
     type,
     cues,
+    raise: RAISE,
     marks: { t0, tEng, tMoney, tTight, tShut, tSix, t2002, t2008, tPull, tLand, tBut, tHands, tTear, tSee, tUp, tGrab, tSeed, tRaise, walkArrive: walkB.arrive },
   };
 }
